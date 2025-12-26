@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(dir /b)",
+      "Bash(head:*)",
+      "Bash(wc:*)",
+      "Bash(python3 -c \"import json; data = json.load(open(r''C:\\Users\\Micha\\Downloads\\google-2025-12-25 (1).json'')); print(f''Total records: {len(data)}''); print(f''Fields per record: {len(data[0].keys())}''); print(''Field names:''); print(list(data[0].keys()))\")",
+      "Bash(python -c \"import json; data = json.load(open(r''C:\\Users\\Micha\\Downloads\\google-2025-12-25 (1).json'')); print(f''Total records: {len(data)}''); print(f''Sample record fields: {len(data[0].keys())}''); print(''First 10 fields:'', list(data[0].keys())[:10])\")",
+      "Bash(python -c \"import json; data = json.load(open(r''C:\\Users\\Micha\\Downloads\\google-2025-12-25 (1).json'', encoding=''utf-8'')); print(f''Total records: {len(data)}''); print(f''Sample record fields: {len(data[0].keys())}''); print(''Fields:'', list(data[0].keys()))\")",
+      "Bash(python process_enhanced_data.py:*)",
+      "Bash(dir:*)",
+      "Bash(python -m http.server:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(cat:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)"
+    ]
+  }
+}

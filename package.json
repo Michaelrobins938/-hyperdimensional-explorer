@@ -1,0 +1,40 @@
+{
+  "name": "data-visualization-portfolio",
+  "version": "2.0.0",
+  "description": "A comprehensive portfolio showcasing advanced data visualization techniques - transforming high-dimensional data into contextually insightful stories and artwork",
+  "main": "portfolio.html",
+  "scripts": {
+    "start": "npx serve . -p 8000",
+    "dev": "npx serve . -p 8000",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "data-visualization",
+    "portfolio",
+    "high-dimensional-data",
+    "PCA",
+    "clustering",
+    "canvas",
+    "webgl",
+    "interactive-viz",
+    "data-art",
+    "dimensional-reduction",
+    "tesseract",
+    "quantum-visualization",
+    "3d-graphics",
+    "data-storytelling"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/data-viz-portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/data-viz-portfolio/issues"
+  },
+  "homepage": "https://your-username.github.io/data-viz-portfolio/"
+}

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Hyperdimensional Explorer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030308;
+            --card: rgba(20, 20, 30, 0.8);
+            --accent: #8b5cf6;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --text: #fff;
+            --muted: #71717a;
+            --border: rgba(255, 255, 255, 0.08)
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1
+        }
+
+        .app {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 1fr 240px;
+            gap: 1rem
+        }
+
+        .header {
+            grid-column: 1/-1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .orb {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+            animation: pulse 3s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.05)
+            }
+        }
+
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .subtitle {
+            font-size: 0.75rem;
+            color: var(--muted)
+        }
+
+        .stats {
+            display: flex;
+            gap: 0.5rem
+        }
+
+        .stat {
+            padding: 0.5rem 0.75rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            text-align: center
+        }
+
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1rem
+        }
+
+        .stat-lbl {
+            font-size: 0.6rem;
+            color: var(--muted);
+            text-transform: uppercase
+        }
+
+        .nav {
+            grid-column: 1/-1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 0.5rem;
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px
+        }
+
+        .nav-btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 500;
+            color: var(--muted);
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px
+        }
+
+        .nav-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05)
+        }
+
+        .nav-btn.active {
+            color: var(--text);
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3)
+        }
+
+        .main {
+            grid-column: 1
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s
+        }
+
+        .section.active {
+            display: block
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .viz-header {
+            margin-bottom: 0.75rem
+        }
+
+        .viz-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600
+        }
+
+        .viz-desc {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-top: 2px
+        }
+
+        .viz-box {
+            position: relative;
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            min-height: 460px
+        }
+
+        .viz-box canvas {
+            display: block;
+            width: 100%;
+            height: 420px
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(3, 3, 8, 0.9);
+            padding: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border)
+        }
+
+        .ctrl {
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: var(--muted);
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer
+        }
+
+        .ctrl:hover,
+        .ctrl.active {
+            color: var(--text);
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent)
+        }
+
+        .sidebar {
+            background: var(--card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            height: fit-content;
+            position: sticky;
+            top: 1rem
+        }
+
+        .sidebar-head {
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6)
+        }
+
+        .sidebar-head h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600
+        }
+
+        .sidebar-body {
+            padding: 1rem
+        }
+
+        .info-row {
+            margin-bottom: 0.5rem
+        }
+
+        .info-lbl {
+            font-size: 0.65rem;
+            color: var(--muted);
+            text-transform: uppercase
+        }
+
+        .info-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600
+        }
+
+        @media(max-width:900px) {
+            .app {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                grid-column: 1
+            }
+        }
+
+        @media(max-width:600px) {
+            .nav-btn span {
+                display: none
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 0.75rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Component -->
+    <script src="../nav-component.js"></script>
+    <div class="app">
+        <canvas id="bg" class="bg"></canvas>
+        <header class="header">
+            <div class="logo">
+                <div class="orb"></div>
+                <div>
+                    <h1 class="title">Ultimate Hyperdimensional Explorer</h1>
+                    <p class="subtitle">312 Dimensions → 8 Clusters → 18 Visualizations</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat"><span class="stat-val">5,929</span><span class="stat-lbl">Events</span></div>
+                <div class="stat"><span class="stat-val">73%</span><span class="stat-lbl">YouTube</span></div>
+                <div class="stat"><span class="stat-val">312</span><span class="stat-lbl">Dims</span></div>
+            </div>
+        </header>
+        <nav class="nav">
+            <button class="nav-btn active" data-v="tesseract">🔷 <span>4D Tesseract</span></button>
+            <button class="nav-btn" data-v="cosmos">🌌 <span>Cosmos</span></button>
+            <button class="nav-btn" data-v="galaxy">🌀 <span>Galaxy</span></button>
+            <button class="nav-btn" data-v="atomic">⚛️ <span>Atomic</span></button>
+            <button class="nav-btn" data-v="quantum">⚡ <span>Quantum</span></button>
+            <button class="nav-btn" data-v="neural">🧠 <span>Neural</span></button>
+            <button class="nav-btn" data-v="parallel">📊 <span>Parallel</span></button>
+            <button class="nav-btn" data-v="heatmap">🔥 <span>Heatmap</span></button>
+            <button class="nav-btn" data-v="flow">🌊 <span>Flow</span></button>
+            <button class="nav-btn" data-v="radar">🎯 <span>Radar</span></button>
+            <button class="nav-btn" data-v="ridge">📈 <span>Ridge</span></button>
+            <button class="nav-btn" data-v="chord">🔗 <span>Chord</span></button>
+        </nav>
+        <main class="main">
+            <section id="tesseract" class="section active">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔷 4D Tesseract Projection</h2>
+                    <p class="viz-desc">Hypercube with clusters mapped to vertices in 4D space</p>
+                </div>
+                <div class="viz-box"><canvas id="tesseract-c"></canvas>
+                    <div class="controls"><button class="ctrl active" id="tess-rot">🔄 Rotate</button><button
+                            class="ctrl" id="tess-exp">💥 Explode</button></div>
+                </div>
+            </section>
+            <section id="cosmos" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌌 Behavioral Cosmos</h2>
+                    <p class="viz-desc">3D cluster visualization with orbiting activity points</p>
+                </div>
+                <div class="viz-box"><canvas id="cosmos-c"></canvas></div>
+            </section>
+            <section id="galaxy" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌀 Galaxy Formation</h2>
+                    <p class="viz-desc">Spiral arms mapped to behavioral clusters</p>
+                </div>
+                <div class="viz-box"><canvas id="galaxy-c"></canvas></div>
+            </section>
+            <section id="atomic" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">⚛️ Atomic Orbitals</h2>
+                    <p class="viz-desc">Electron shells representing activity frequency</p>
+                </div>
+                <div class="viz-box"><canvas id="atomic-c"></canvas></div>
+            </section>
+            <section id="quantum" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">⚡ Quantum Field</h2>
+                    <p class="viz-desc">Probability clouds of behavioral patterns</p>
+                </div>
+                <div class="viz-box"><canvas id="quantum-c"></canvas></div>
+            </section>
+            <section id="neural" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🧠 Neural Network</h2>
+                    <p class="viz-desc">Synaptic connections between activity nodes</p>
+                </div>
+                <div class="viz-box"><canvas id="neural-c"></canvas></div>
+            </section>
+            <section id="parallel" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">📊 Parallel Coordinates</h2>
+                    <p class="viz-desc">Multi-dimensional feature space</p>
+                </div>
+                <div class="viz-box"><canvas id="parallel-c"></canvas></div>
+            </section>
+            <section id="heatmap" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔥 Temporal Heatmap</h2>
+                    <p class="viz-desc">Activity intensity by day and hour</p>
+                </div>
+                <div class="viz-box"><canvas id="heatmap-c"></canvas></div>
+            </section>
+            <section id="flow" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌊 State Flow</h2>
+                    <p class="viz-desc">Animated transitions between products</p>
+                </div>
+                <div class="viz-box"><canvas id="flow-c"></canvas></div>
+            </section>
+            <section id="radar" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🎯 Behavioral Radar</h2>
+                    <p class="viz-desc">Multi-axis activity profile</p>
+                </div>
+                <div class="viz-box"><canvas id="radar-c"></canvas></div>
+            </section>
+            <section id="ridge" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">📈 Ridge Landscape</h2>
+                    <p class="viz-desc">3D stacked weekly distributions</p>
+                </div>
+                <div class="viz-box"><canvas id="ridge-c"></canvas></div>
+            </section>
+            <section id="chord" class="section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔗 Chord Transitions</h2>
+                    <p class="viz-desc">Circular flow between categories</p>
+                </div>
+                <div class="viz-box"><canvas id="chord-c"></canvas></div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-head">
+                <h3>Analysis Summary</h3>
+            </div>
+            <div class="sidebar-body">
+                <div class="info-row">
+                    <div class="info-lbl">Feature Matrix</div>
+                    <div class="info-val">5,929 × 312</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Sparsity</div>
+                    <div class="info-val">94%</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Variance PC1</div>
+                    <div class="info-val">11%</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Clusters</div>
+                    <div class="info-val">8</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Peak Hour</div>
+                    <div class="info-val">22:00</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Top Product</div>
+                    <div class="info-val">YouTube (74%)</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script>
+        const D = { hourly: [218, 298, 208, 184, 200, 225, 250, 187, 239, 203, 269, 275, 178, 191, 239, 193, 319, 244, 267, 309, 280, 255, 350, 348], clusters: [{ id: 0, size: 4404, lbl: 'YouTube' }, { id: 1, size: 1058, lbl: 'Chrome' }, { id: 2, size: 118, lbl: 'Assistant' }, { id: 3, size: 212, lbl: 'Search' }, { id: 4, size: 66, lbl: 'Help' }, { id: 5, size: 4, lbl: 'Maps' }, { id: 6, size: 60, lbl: 'Notif' }, { id: 7, size: 7, lbl: 'Dev' }], colors: ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#22c55e'], products: [{ n: 'YouTube', p: 74.3 }, { n: 'Search', p: 6.6 }, { n: 'Chrome', p: 2.4 }, { n: 'Shopify', p: 2.3 }, { n: 'OpenRouter', p: 1.8 }] };
+        const btns = document.querySelectorAll('.nav-btn'), secs = document.querySelectorAll('.section');
+        let viz = {};
+        btns.forEach(b => b.onclick = () => { btns.forEach(x => x.classList.remove('active')); b.classList.add('active'); secs.forEach(s => s.classList.remove('active')); document.getElementById(b.dataset.v).classList.add('active'); init(b.dataset.v) });
+        function init(v) { if (viz[v]) return; const c = document.getElementById(v + '-c'); if (!c) return; switch (v) { case 'tesseract': viz[v] = new Tesseract(c); break; case 'cosmos': viz[v] = new Cosmos(c); break; case 'galaxy': viz[v] = new Galaxy(c); break; case 'atomic': viz[v] = new Atomic(c); break; case 'quantum': viz[v] = new Quantum(c); break; case 'neural': viz[v] = new Neural(c); break; case 'parallel': viz[v] = new Parallel(c); break; case 'heatmap': viz[v] = new Heatmap(c); break; case 'flow': viz[v] = new Flow(c); break; case 'radar': viz[v] = new Radar(c); break; case 'ridge': viz[v] = new Ridge(c); break; case 'chord': viz[v] = new Chord(c); break } }
+        setTimeout(() => init('tesseract'), 100);
+        // BG
+        (function () { const c = document.getElementById('bg'), x = c.getContext('2d'), ps = []; function rs() { c.width = innerWidth; c.height = innerHeight } rs(); onresize = rs; for (let i = 0; i < 50; i++)ps.push({ x: Math.random() * c.width, y: Math.random() * c.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1, col: D.colors[i % 8] }); function an() { x.fillStyle = 'rgba(3,3,8,0.05)'; x.fillRect(0, 0, c.width, c.height); ps.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > c.width) p.vx *= -1; if (p.y < 0 || p.y > c.height) p.vy *= -1; x.beginPath(); x.arc(p.x, p.y, p.r, 0, Math.PI * 2); x.fillStyle = p.col + '30'; x.fill() }); for (let i = 0; i < ps.length; i++)for (let j = i + 1; j < ps.length; j++) { const d = Math.hypot(ps[i].x - ps[j].x, ps[i].y - ps[j].y); if (d < 100) { x.beginPath(); x.moveTo(ps[i].x, ps[i].y); x.lineTo(ps[j].x, ps[j].y); x.strokeStyle = `rgba(139,92,246,${0.08 * (1 - d / 100)})`; x.stroke() } } requestAnimationFrame(an) } an() })();
+        // TESSERACT
+        class Tesseract { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.rotating = true; this.exploded = false; this.angle = Math.PI / 4; this.rx = 0; this.ry = 0; this.t = 0; this.verts = []; for (let i = 0; i < 16; i++)this.verts.push([(i & 1) ? 1 : -1, (i & 2) ? 1 : -1, (i & 4) ? 1 : -1, (i & 8) ? 1 : -1]); this.edges = []; for (let i = 0; i < 16; i++)for (let j = i + 1; j < 16; j++) { let d = 0; for (let k = 0; k < 4; k++)if (this.verts[i][k] !== this.verts[j][k]) d++; if (d === 1) this.edges.push([i, j]) } this.pts = this.genPts(); document.getElementById('tess-rot').onclick = e => { this.rotating = !this.rotating; e.target.classList.toggle('active', this.rotating) }; document.getElementById('tess-exp').onclick = e => { this.exploded = !this.exploded; e.target.classList.toggle('active', this.exploded) }; this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2; this.sc = Math.min(this.c.width, this.c.height) * 0.25 } genPts() { const pts = []; D.clusters.forEach((cl, ci) => { const cnt = Math.min(cl.size / 20, 80); for (let i = 0; i < cnt; i++) { const v = this.verts[ci % 8]; pts.push({ c: ci, x: v[0] + (Math.random() - 0.5) * 0.4, y: v[1] + (Math.random() - 0.5) * 0.4, z: v[2] + (Math.random() - 0.5) * 0.4, w: v[3] + (Math.random() - 0.5) * 0.4, sz: 1 + Math.random() * 2, sp: 0.5 + Math.random() * 0.5, ph: Math.random() * Math.PI * 2 }) } }); return pts } rot4(p, a) { const c = Math.cos(a), s = Math.sin(a); return [p[0] * c - p[3] * s, p[1], p[2], p[0] * s + p[3] * c] } proj(p) { const e = this.exploded ? 2 : 1; let pt = [p[0] * e, p[1] * e, p[2] * e, p[3]]; pt = this.rot4(pt, this.angle + this.t * 0.3); const d = 2, f = 1 / (d - pt[3]); let x = pt[0] * f, y = pt[1] * f, z = pt[2] * f; const cy = Math.cos(this.ry), sy = Math.sin(this.ry); let tx = x * cy - z * sy; z = x * sy + z * cy; x = tx; const cx = Math.cos(this.rx), sx = Math.sin(this.rx); let ty = y * cx - z * sx; z = y * sx + z * cx; y = ty; const pf = 3 / (3 + z); return { x: this.cx + x * this.sc * pf, y: this.cy + y * this.sc * pf, z, f: pf } } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.15)'; x.fillRect(0, 0, this.c.width, this.c.height); if (this.rotating) { this.rx += 0.003; this.ry += 0.005 } this.t += 0.02; const pv = this.verts.map(v => this.proj(v)); this.edges.forEach(([i, j]) => { const p1 = pv[i], p2 = pv[j], a = 0.1 + (p1.z + p2.z + 4) * 0.1; x.beginPath(); x.moveTo(p1.x, p1.y); x.lineTo(p2.x, p2.y); x.strokeStyle = `rgba(139,92,246,${Math.max(0.05, a)})`; x.lineWidth = 1 + p1.f * 0.5; x.stroke() }); pv.forEach(p => { const sz = Math.max(2, 3 + p.f * 2); x.beginPath(); x.arc(p.x, p.y, sz, 0, Math.PI * 2); x.fillStyle = 'rgba(255,255,255,0.8)'; x.fill() }); const pp = this.pts.map(p => { const o = Math.sin(this.t * p.sp + p.ph) * 0.1; return { ...this.proj([p.x + o, p.y + o, p.z, p.w]), c: p.c, sz: p.sz } }).sort((a, b) => a.z - b.z); pp.forEach(p => { const sz = Math.max(1, p.sz * (p.f || 1)); x.beginPath(); x.arc(p.x, p.y, sz, 0, Math.PI * 2); x.fillStyle = D.colors[p.c] || '#8b5cf6'; x.globalAlpha = Math.min(1, 0.4 + (p.f || 0) * 0.4); x.fill(); x.globalAlpha = 1 }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // COSMOS
+        class Cosmos { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.rot = 0; this.pts = []; const ctrs = [[-40, 20], [30, -20], [40, 30], [-20, -30], [10, 35], [-10, -25], [25, 15], [-35, 10]]; D.clusters.forEach((cl, i) => { const ct = ctrs[i % 8], cnt = Math.min(cl.size / 15, 100); for (let j = 0; j < cnt; j++)this.pts.push({ x: ct[0] + (Math.random() - 0.5) * 25, y: ct[1] + (Math.random() - 0.5) * 25, z: (Math.random() - 0.5) * 20, c: i }) }); this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.1)'; x.fillRect(0, 0, this.c.width, this.c.height); this.rot += 0.003; const pr = this.pts.map(p => { const cy = Math.cos(this.rot), sy = Math.sin(this.rot); const tx = p.x * cy - p.z * sy, tz = p.x * sy + p.z * cy; const s = 300 / (300 + tz) * 4; return { x: this.cx + tx * s, y: this.cy + p.y * s, z: tz, s, c: p.c } }).sort((a, b) => a.z - b.z); pr.forEach(p => { x.beginPath(); x.arc(p.x, p.y, p.s * 2, 0, Math.PI * 2); x.fillStyle = D.colors[p.c] + 'cc'; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // GALAXY
+        class Galaxy { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.rot = 0; this.stars = []; for (let i = 0; i < 400; i++) { const t = i / 400, a = (i % 4) / 4 * Math.PI * 2 + t * Math.PI * 3, r = 30 + t * 160; this.stars.push({ a, r, pr: (Math.random() - 0.5) * 30, c: i % 8, sz: 1 + Math.random() * 2, sp: 0.5 + (1 - t) * 0.5 }) } this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.08)'; x.fillRect(0, 0, this.c.width, this.c.height); this.rot += 0.003; const gr = x.createRadialGradient(this.cx, this.cy, 0, this.cx, this.cy, 60); gr.addColorStop(0, 'rgba(255,200,100,0.3)'); gr.addColorStop(1, 'transparent'); x.beginPath(); x.arc(this.cx, this.cy, 60, 0, Math.PI * 2); x.fillStyle = gr; x.fill(); this.stars.forEach(s => { const a = s.a + this.rot * s.sp, px = this.cx + Math.cos(a) * s.r + s.pr, py = this.cy + Math.sin(a) * s.r * 0.5; x.beginPath(); x.arc(px, py, s.sz, 0, Math.PI * 2); x.fillStyle = D.colors[s.c]; x.globalAlpha = 0.7; x.fill(); x.globalAlpha = 1 }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // ATOMIC
+        class Atomic { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.t = 0; this.electrons = []; D.clusters.forEach((cl, i) => { const r = 50 + i * 30, cnt = Math.max(2, Math.min(6, Math.floor(cl.size / 500))); for (let j = 0; j < cnt; j++)this.electrons.push({ r, a: j / cnt * Math.PI * 2, sp: 1 + 1 / (i + 1), c: i }) }); this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.1)'; x.fillRect(0, 0, this.c.width, this.c.height); this.t += 0.02; const gr = x.createRadialGradient(this.cx, this.cy, 0, this.cx, this.cy, 35); gr.addColorStop(0, 'rgba(239,68,68,0.5)'); gr.addColorStop(1, 'transparent'); x.beginPath(); x.arc(this.cx, this.cy, 35, 0, Math.PI * 2); x.fillStyle = gr; x.fill(); for (let i = 0; i < 8; i++) { x.beginPath(); x.arc(this.cx, this.cy, 50 + i * 30, 0, Math.PI * 2); x.strokeStyle = D.colors[i] + '30'; x.stroke() } this.electrons.forEach(e => { const a = e.a + this.t * e.sp, px = this.cx + Math.cos(a) * e.r, py = this.cy + Math.sin(a) * e.r; x.beginPath(); x.arc(px, py, 4, 0, Math.PI * 2); x.fillStyle = D.colors[e.c]; x.fill(); x.beginPath(); x.arc(px, py, 2, 0, Math.PI * 2); x.fillStyle = '#fff'; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // QUANTUM
+        class Quantum { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.t = 0; this.waves = D.clusters.map((cl, i) => ({ c: i, a: Math.random() * Math.PI * 2, f: 0.5 + Math.random() * 0.5 })); this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.05)'; x.fillRect(0, 0, this.c.width, this.c.height); this.t += 0.03; this.waves.forEach((w, i) => { const r = 80 + i * 25; for (let a = 0; a < Math.PI * 2; a += 0.1) { const pr = r + Math.sin(a * 3 + this.t * w.f + w.a) * 15, px = this.cx + Math.cos(a) * pr, py = this.cy + Math.sin(a) * pr; x.beginPath(); x.arc(px, py, 2, 0, Math.PI * 2); x.fillStyle = D.colors[w.c] + '80'; x.fill() } }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // NEURAL
+        class Neural { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.nodes = []; this.edges = []; for (let i = 0; i < 40; i++)this.nodes.push({ x: 100 + Math.random() * (c.width - 200 || 400), y: 50 + Math.random() * 320, c: i % 8, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5 }); for (let i = 0; i < this.nodes.length; i++)for (let j = i + 1; j < this.nodes.length; j++)if (Math.random() < 0.1) this.edges.push([i, j]); this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420 } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.1)'; x.fillRect(0, 0, this.c.width, this.c.height); this.nodes.forEach(n => { n.x += n.vx; n.y += n.vy; if (n.x < 50 || n.x > this.c.width - 50) n.vx *= -1; if (n.y < 50 || n.y > this.c.height - 50) n.vy *= -1 }); this.edges.forEach(([i, j]) => { const n1 = this.nodes[i], n2 = this.nodes[j], d = Math.hypot(n1.x - n2.x, n1.y - n2.y); if (d < 150) { x.beginPath(); x.moveTo(n1.x, n1.y); x.lineTo(n2.x, n2.y); x.strokeStyle = `rgba(139,92,246,${0.3 * (1 - d / 150)})`; x.stroke() } }); this.nodes.forEach(n => { x.beginPath(); x.arc(n.x, n.y, 6, 0, Math.PI * 2); x.fillStyle = D.colors[n.c]; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // PARALLEL
+        class Parallel { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.pts = []; for (let i = 0; i < 150; i++)this.pts.push({ c: i % 8, v: [Math.random(), Math.random(), Math.random(), Math.random(), Math.random()] }); this.rs(); onresize = () => { this.rs(); this.draw() }; this.draw() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.m = { l: 50, r: 30, t: 40, b: 50 } } draw() { const x = this.x, w = this.c.width - this.m.l - this.m.r, h = this.c.height - this.m.t - this.m.b, axes = ['Product', 'Hour', 'Dim1', 'Dim2', 'Cluster'], sp = w / (axes.length - 1); x.fillStyle = '#030308'; x.fillRect(0, 0, this.c.width, this.c.height); axes.forEach((_, i) => { const ax = this.m.l + i * sp; x.beginPath(); x.moveTo(ax, this.m.t); x.lineTo(ax, this.m.t + h); x.strokeStyle = 'rgba(255,255,255,0.2)'; x.stroke() }); this.pts.forEach(p => { x.beginPath(); p.v.forEach((v, i) => { const px = this.m.l + i * sp, py = this.m.t + (1 - v) * h; i === 0 ? x.moveTo(px, py) : x.lineTo(px, py) }); x.strokeStyle = D.colors[p.c] + '40'; x.stroke() }); x.fillStyle = '#9ca3af'; x.font = '10px Inter'; x.textAlign = 'center'; axes.forEach((a, i) => x.fillText(a, this.m.l + i * sp, this.c.height - 20)) } }
+        // HEATMAP
+        class Heatmap { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.data = []; const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']; for (let dy = 0; dy < 7; dy++)for (let h = 0; h < 24; h++) { let v = D.hourly[h] / 350; if ((dy === 0 || dy === 6) && (h >= 20 || h <= 2)) v *= 1.3; if (dy >= 1 && dy <= 5 && h >= 9 && h <= 17) v *= 0.8; this.data.push({ dy, h, v: Math.min(1, v * (0.8 + Math.random() * 0.4)) }) } this.rs(); onresize = () => { this.rs(); this.draw() }; this.draw() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.m = { l: 50, r: 40, t: 30, b: 40 } } draw() { const x = this.x, iw = this.c.width - this.m.l - this.m.r, ih = this.c.height - this.m.t - this.m.b, cw = iw / 24, ch = ih / 7; x.fillStyle = '#030308'; x.fillRect(0, 0, this.c.width, this.c.height); this.data.forEach(d => { const px = this.m.l + d.h * cw, py = this.m.t + d.dy * ch; x.fillStyle = this.hc(d.v); x.fillRect(px + 1, py + 1, cw - 2, ch - 2) }); x.fillStyle = '#9ca3af'; x.font = '9px Inter'; x.textAlign = 'right';['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((d, i) => x.fillText(d, this.m.l - 5, this.m.t + i * ch + ch / 2 + 3)); x.textAlign = 'center'; for (let h = 0; h < 24; h += 4)x.fillText(`${h}h`, this.m.l + h * cw + cw / 2, this.c.height - 15) } hc(v) { const r = Math.round(20 + v * 200), g = Math.round(20 + v * 50), b = Math.round(30 + v * 180); return `rgb(${r},${g},${b})` } }
+        // FLOW
+        class Flow { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.flows = [{ fx: 80, fy: 100, tx: 420, ty: 100, v: 3967, col: '#ef4444' }, { fx: 80, fy: 180, tx: 420, ty: 160, v: 389, col: '#3b82f6' }, { fx: 80, fy: 260, tx: 420, ty: 220, v: 145, col: '#f59e0b' }, { fx: 80, fy: 340, tx: 420, ty: 280, v: 136, col: '#10b981' }]; this.particles = []; this.flows.forEach((f, fi) => { const cnt = Math.ceil(f.v / 150); for (let i = 0; i < cnt; i++)this.particles.push({ fi, t: Math.random(), sp: 0.003 + Math.random() * 0.002 }) }); this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; const sx = this.c.width / 500; this.flows.forEach(f => { f.fxs = f.fx * sx; f.txs = f.tx * sx }) } draw() { const x = this.x; x.fillStyle = 'rgba(3,3,8,0.1)'; x.fillRect(0, 0, this.c.width, this.c.height); this.flows.forEach(f => { x.beginPath(); x.moveTo(f.fxs, f.fy); x.bezierCurveTo(f.fxs + 100, f.fy, f.txs - 100, f.ty, f.txs, f.ty); x.strokeStyle = f.col + '30'; x.lineWidth = Math.max(2, f.v / 200); x.stroke() }); this.particles.forEach(p => { const f = this.flows[p.fi], t = p.t, m = 1 - t; const px = m * m * m * f.fxs + 3 * m * m * t * (f.fxs + 100) + 3 * m * t * t * (f.txs - 100) + t * t * t * f.txs; const py = m * m * m * f.fy + 3 * m * m * t * f.fy + 3 * m * t * t * f.ty + t * t * t * f.ty; x.beginPath(); x.arc(px, py, 3, 0, Math.PI * 2); x.fillStyle = f.col; x.fill(); p.t += p.sp; if (p.t > 1) p.t = 0 }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // RADAR
+        class Radar { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.data = [{ a: 'YouTube', v: 0.74 }, { a: 'Search', v: 0.22 }, { a: 'Chrome', v: 0.18 }, { a: 'Shopify', v: 0.15 }, { a: 'AI', v: 0.12 }, { a: 'Morning', v: 0.20 }, { a: 'Afternoon', v: 0.28 }, { a: 'Night', v: 0.35 }]; this.ph = 0; this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2; this.rad = Math.min(this.c.width, this.c.height) * 0.32 } draw() { const x = this.x, n = this.data.length, as = Math.PI * 2 / n; x.fillStyle = '#030308'; x.fillRect(0, 0, this.c.width, this.c.height); this.ph += 0.02; for (let i = 5; i >= 1; i--) { const r = this.rad * i / 5; x.beginPath(); for (let j = 0; j <= n; j++) { const a = j * as - Math.PI / 2, px = this.cx + Math.cos(a) * r, py = this.cy + Math.sin(a) * r; j === 0 ? x.moveTo(px, py) : x.lineTo(px, py) } x.strokeStyle = `rgba(99,102,241,${0.1 + i * 0.04})`; x.stroke() } this.data.forEach((d, i) => { const a = i * as - Math.PI / 2; x.beginPath(); x.moveTo(this.cx, this.cy); x.lineTo(this.cx + Math.cos(a) * this.rad, this.cy + Math.sin(a) * this.rad); x.strokeStyle = 'rgba(139,92,246,0.3)'; x.stroke(); x.fillStyle = '#9ca3af'; x.font = '10px Outfit'; x.textAlign = 'center'; x.fillText(d.a, this.cx + Math.cos(a) * (this.rad + 20), this.cy + Math.sin(a) * (this.rad + 20)) }); x.beginPath(); this.data.forEach((d, i) => { const a = i * as - Math.PI / 2, r = this.rad * d.v; i === 0 ? x.moveTo(this.cx + Math.cos(a) * r, this.cy + Math.sin(a) * r) : x.lineTo(this.cx + Math.cos(a) * r, this.cy + Math.sin(a) * r) }); x.closePath(); x.fillStyle = 'rgba(139,92,246,0.3)'; x.fill(); x.strokeStyle = '#8b5cf6'; x.lineWidth = 2; x.stroke(); this.data.forEach((d, i) => { const a = i * as - Math.PI / 2, r = this.rad * d.v; x.beginPath(); x.arc(this.cx + Math.cos(a) * r, this.cy + Math.sin(a) * r, 4, 0, Math.PI * 2); x.fillStyle = '#ec4899'; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // RIDGE
+        class Ridge { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.off = 0; this.rs(); onresize = () => this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420 } draw() { const x = this.x, days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], m = { l: 60, r: 30, t: 20, b: 30 }, w = this.c.width - m.l - m.r, h = this.c.height - m.t - m.b, rh = h / 7, amp = rh * 0.7; x.fillStyle = '#030308'; x.fillRect(0, 0, this.c.width, this.c.height); this.off += 0.02; days.forEach((day, di) => { const by = m.t + di * rh + rh * 0.85, hue = 250 + di * 12; const gr = x.createLinearGradient(m.l, by - amp, m.l, by); gr.addColorStop(0, `hsla(${hue},70%,55%,0.8)`); gr.addColorStop(1, `hsla(${hue},70%,40%,0.1)`); x.beginPath(); x.moveTo(m.l, by); for (let i = 0; i < 24; i++) { const v = D.hourly[i] / 350 * (0.85 + Math.random() * 0.1), px = m.l + i / 23 * w, wv = Math.sin(this.off + i * 0.3 + di) * 2; x.lineTo(px, by - v * amp + wv) } x.lineTo(m.l + w, by); x.closePath(); x.fillStyle = gr; x.fill(); x.fillStyle = '#9ca3af'; x.font = '10px Outfit'; x.textAlign = 'right'; x.fillText(day, m.l - 8, by - rh * 0.25) }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // CHORD
+        class Chord { constructor(c) { this.c = c; this.x = c.getContext('2d'); this.nodes = ['YouTube', 'Search', 'Chrome', 'Shopify', 'Other']; this.cols = ['#ef4444', '#3b82f6', '#f59e0b', '#10b981', '#8b5cf6']; this.matrix = [[3967, 120, 29, 0, 50], [132, 168, 0, 27, 20], [18, 0, 145, 23, 10], [0, 27, 23, 136, 15], [50, 20, 10, 15, 200]]; this.arcs = []; this.hov = null; this.rs(); this.c.onmousemove = e => { const r = this.c.getBoundingClientRect(), mx = e.clientX - r.left - this.cx, my = e.clientY - r.top - this.cy, d = Math.hypot(mx, my), a = Math.atan2(my, mx); this.hov = null; if (d > this.rad - 25 && d < this.rad + 25) this.arcs.forEach(arc => { let na = a; if (na < arc.s) na += Math.PI * 2; if (na >= arc.s && na <= arc.e) this.hov = arc.i }) }; this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 32; this.c.height = 420; this.cx = this.c.width / 2; this.cy = this.c.height / 2; this.rad = Math.min(this.c.width, this.c.height) * 0.35; this.calcArcs() } calcArcs() { const tots = this.nodes.map((_, i) => this.matrix[i].reduce((a, b) => a + b, 0) + this.matrix.reduce((a, r) => a + r[i], 0)), tot = tots.reduce((a, b) => a + b, 0); let a = -Math.PI / 2; const gap = 0.04; tots.forEach((t, i) => { const sp = t / tot * (Math.PI * 2 - gap * 5); this.arcs.push({ s: a, e: a + sp, m: a + sp / 2, i }); a += sp + gap }) } draw() { const x = this.x; x.fillStyle = '#030308'; x.fillRect(0, 0, this.c.width, this.c.height); for (let i = 0; i < 5; i++)for (let j = 0; j < 5; j++) { if (this.matrix[i][j] === 0) continue; const h = this.hov === null || this.hov === i || this.hov === j, al = h ? 0.5 : 0.1, sa = this.arcs[i], da = this.arcs[j]; if (!sa || !da) continue; const san = sa.s + (sa.e - sa.s) * (j / 5 * 0.8 + 0.1), dan = da.s + (da.e - da.s) * (i / 5 * 0.8 + 0.1), r = this.rad - 12; x.beginPath(); x.moveTo(this.cx + Math.cos(san) * r, this.cy + Math.sin(san) * r); x.quadraticCurveTo(this.cx, this.cy, this.cx + Math.cos(dan) * r, this.cy + Math.sin(dan) * r); x.strokeStyle = this.cols[i] + Math.round(al * 255).toString(16).padStart(2, '0'); x.lineWidth = Math.max(1, this.matrix[i][j] / 150); x.stroke() } this.arcs.forEach((arc, i) => { const h = this.hov === null || this.hov === i; x.beginPath(); x.arc(this.cx, this.cy, this.rad, arc.s, arc.e); x.strokeStyle = this.cols[i]; x.lineWidth = h ? 22 : 18; x.lineCap = 'round'; x.stroke(); x.fillStyle = h ? '#fff' : '#9ca3af'; x.font = h ? 'bold 11px Outfit' : '10px Outfit'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(this.nodes[i], this.cx + Math.cos(arc.m) * (this.rad + 30), this.cy + Math.sin(arc.m) * (this.rad + 30)) }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+    </script>
+</body>
+
+</html>

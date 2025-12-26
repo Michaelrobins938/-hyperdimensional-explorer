@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultra-Hyperdimensional Visualizer | 49D → ∞</title>
+    <meta name="description" content="Next-generation multi-dimensional data visualization with tesseract projections, quantum fields, and neural symphonies.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Global Background Canvas -->
+        <canvas id="quantum-bg"></canvas>
+        
+        <!-- Animated Grid Overlay -->
+        <div class="grid-overlay"></div>
+        
+        <!-- Holographic Scanlines -->
+        <div class="scanlines"></div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-glow"></div>
+            <div class="header-inner">
+                <div class="brand">
+                    <div class="brand-orb">
+                        <div class="orb-layer layer-1"></div>
+                        <div class="orb-layer layer-2"></div>
+                        <div class="orb-layer layer-3"></div>
+                        <div class="orb-core">
+                            <span class="dimension-count">49</span>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <h1>ULTRA<span class="accent">HYPER</span>DIMENSIONAL</h1>
+                        <p class="tagline">Google Activity Analysis • 9,998 Events • 50D Feature Space</p>
+                    </div>
+                </div>
+                
+                <div class="live-stats">
+                    <div class="stat holographic">
+                        <div class="stat-ring">
+                            <svg viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="url(#grad1)" stroke-width="2"
+                                    stroke-dasharray="73.9 26.1" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+                            </svg>
+                            <defs>
+                                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" style="stop-color:#ec4899"/>
+                                    <stop offset="100%" style="stop-color:#8b5cf6"/>
+                                </linearGradient>
+                            </defs>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-value">73.9%</span>
+                            <span class="stat-label">YouTube</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat">
+                        <span class="stat-value glow">10</span>
+                        <span class="stat-label">Clusters</span>
+                    </div>
+                    
+                    <div class="stat">
+                        <span class="stat-value">22:00</span>
+                        <span class="stat-label">Peak Hour</span>
+                    </div>
+
+                    <div class="stat pulse">
+                        <span class="stat-value">601</span>
+                        <span class="stat-label">Max Events</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Orbs -->
+        <nav class="nav-orbs">
+            <button class="nav-orb active" data-view="tesseract">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <span class="orb-label">4D Tesseract</span>
+            </button>
+            
+            <button class="nav-orb" data-view="quantum">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="3"/>
+                        <circle cx="12" cy="12" r="7" stroke-dasharray="4 4"/>
+                        <circle cx="12" cy="12" r="11" stroke-dasharray="2 6"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Quantum Field</span>
+            </button>
+            
+            <button class="nav-orb" data-view="galaxy">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2c-4 4-4 16 0 20"/>
+                        <path d="M2 12c4 4 16 4 20 0"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Galaxy Spiral</span>
+            </button>
+            
+            <button class="nav-orb" data-view="atomic">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="2"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(30 12 12)"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-30 12 12)"/>
+                        <ellipse cx="12" cy="12" rx="10" ry="4"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Atomic Shell</span>
+            </button>
+            
+            <button class="nav-orb" data-view="neural">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="4" cy="12" r="2"/>
+                        <circle cx="12" cy="6" r="2"/>
+                        <circle cx="12" cy="18" r="2"/>
+                        <circle cx="20" cy="12" r="2"/>
+                        <line x1="6" y1="12" x2="10" y2="7"/>
+                        <line x1="6" y1="12" x2="10" y2="17"/>
+                        <line x1="14" y1="7" x2="18" y2="12"/>
+                        <line x1="14" y1="17" x2="18" y2="12"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Neural Web</span>
+            </button>
+            
+            <button class="nav-orb" data-view="spectral">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4v16h16"/>
+                        <path d="M4 16c2-6 4-8 8-8s6 6 8 2"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Spectral Flow</span>
+            </button>
+            
+            <button class="nav-orb" data-view="waveform">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 12c1-3 2-6 4-6s3 6 4 6 3-4 4-4 3 4 4 4 3-6 4-6"/>
+                    </svg>
+                </div>
+                <span class="orb-label">Time Waves</span>
+            </button>
+            
+            <button class="nav-orb" data-view="manifold">
+                <div class="orb-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4l16 16M4 20l16-16M12 4v16M4 12h16"/>
+                    </svg>
+                </div>
+                <span class="orb-label">PCA Manifold</span>
+            </button>
+        </nav>
+
+        <!-- Main Visualization Area -->
+        <main class="main-viz">
+            <!-- Tesseract View -->
+            <section id="tesseract-view" class="viz-panel active">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🌀</span>
+                        <div>
+                            <h2>4D Tesseract Cluster Projection</h2>
+                            <p>8 behavioral clusters mapped onto rotating hypercube vertices</p>
+                        </div>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="ctrl-btn active" id="tesseract-rotate">
+                            <span>Auto-Rotate</span>
+                        </button>
+                        <button class="ctrl-btn" id="tesseract-explode">
+                            <span>Explode</span>
+                        </button>
+                        <div class="ctrl-slider">
+                            <label>4D Angle</label>
+                            <input type="range" id="tesseract-angle" min="0" max="360" value="45">
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="tesseract-canvas"></canvas>
+                    <div class="canvas-overlay cluster-info">
+                        <div class="cluster-card active" data-cluster="0">
+                            <div class="cluster-dot" style="--cluster-color: #6366f1"></div>
+                            <div class="cluster-data">
+                                <span class="cluster-name">YouTube Core</span>
+                                <span class="cluster-pct">74.3%</span>
+                            </div>
+                        </div>
+                        <div class="cluster-card" data-cluster="1">
+                            <div class="cluster-dot" style="--cluster-color: #10b981"></div>
+                            <div class="cluster-data">
+                                <span class="cluster-name">Chrome Explorer</span>
+                                <span class="cluster-pct">17.8%</span>
+                            </div>
+                        </div>
+                        <div class="cluster-card" data-cluster="2">
+                            <div class="cluster-dot" style="--cluster-color: #f59e0b"></div>
+                            <div class="cluster-data">
+                                <span class="cluster-name">Assistant</span>
+                                <span class="cluster-pct">2.0%</span>
+                            </div>
+                        </div>
+                        <div class="cluster-card" data-cluster="3">
+                            <div class="cluster-dot" style="--cluster-color: #ef4444"></div>
+                            <div class="cluster-data">
+                                <span class="cluster-name">Searchers</span>
+                                <span class="cluster-pct">3.6%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quantum Field View -->
+            <section id="quantum-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🔬</span>
+                        <div>
+                            <h2>Quantum Probability Field</h2>
+                            <p>Activity events as probability wave functions across dimensional space</p>
+                        </div>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="ctrl-btn active" id="quantum-wave">
+                            <span>Wave Mode</span>
+                        </button>
+                        <button class="ctrl-btn" id="quantum-particle">
+                            <span>Particle Mode</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="quantum-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Galaxy View -->
+            <section id="galaxy-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🌌</span>
+                        <div>
+                            <h2>Galaxy Cluster Formation</h2>
+                            <p>Gravitational clustering simulation with particle trails</p>
+                        </div>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="ctrl-btn active" id="galaxy-spiral">
+                            <span>Spiral</span>
+                        </button>
+                        <button class="ctrl-btn" id="galaxy-ellipse">
+                            <span>Elliptical</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="galaxy-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Atomic Shell View -->
+            <section id="atomic-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">⚛️</span>
+                        <div>
+                            <h2>Atomic Orbital Shell</h2>
+                            <p>Product density as electron cloud probability distributions</p>
+                        </div>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="ctrl-btn active" id="atomic-orbit">
+                            <span>Orbital</span>
+                        </button>
+                        <button class="ctrl-btn" id="atomic-shell">
+                            <span>Shell</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="atomic-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Neural Web View -->
+            <section id="neural-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🧠</span>
+                        <div>
+                            <h2>Neural Transition Web</h2>
+                            <p>Product transitions as synaptic connections with signal propagation</p>
+                        </div>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="ctrl-btn active" id="neural-fire">
+                            <span>Fire Signals</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="neural-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Spectral Flow View -->
+            <section id="spectral-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🌈</span>
+                        <div>
+                            <h2>Spectral Energy Flow</h2>
+                            <p>Dimensional variance as flowing energy ribbons through PCA space</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="spectral-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Time Waveform View -->
+            <section id="waveform-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">🌊</span>
+                        <div>
+                            <h2>Temporal Waveform Analysis</h2>
+                            <p>24-hour activity patterns as 3D ridge plots with interference patterns</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="waveform-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- PCA Manifold View -->
+            <section id="manifold-view" class="viz-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="title-icon">📊</span>
+                        <div>
+                            <h2>PCA Variance Manifold</h2>
+                            <p>Principal component contributions visualized as dimensional portal</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="manifold-canvas"></canvas>
+                    <div class="pca-legend">
+                        <div class="pca-item" style="--pca-color: #6366f1">
+                            <span class="pca-label">PC1</span>
+                            <span class="pca-value">11.0%</span>
+                        </div>
+                        <div class="pca-item" style="--pca-color: #8b5cf6">
+                            <span class="pca-label">PC2</span>
+                            <span class="pca-value">5.5%</span>
+                        </div>
+                        <div class="pca-item" style="--pca-color: #ec4899">
+                            <span class="pca-label">PC3</span>
+                            <span class="pca-value">4.2%</span>
+                        </div>
+                        <div class="pca-item" style="--pca-color: #06b6d4">
+                            <span class="pca-label">PC4</span>
+                            <span class="pca-value">3.7%</span>
+                        </div>
+                        <div class="pca-item" style="--pca-color: #10b981">
+                            <span class="pca-label">PC5</span>
+                            <span class="pca-value">3.6%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Side Panel -->
+        <aside class="side-panel">
+            <!-- Activity Stream -->
+            <div class="panel-section activity-stream">
+                <div class="section-header">
+                    <h3><span class="icon">⚡</span> Activity Stream</h3>
+                    <div class="section-controls">
+                        <button class="section-filter active" data-filter="all">All</button>
+                        <button class="section-filter" data-filter="watched">Watched</button>
+                        <button class="section-filter" data-filter="visited">Visited</button>
+                    </div>
+                </div>
+                <div class="stream-stats">
+                    <div class="stat-mini">
+                        <span class="stat-label">Total Events</span>
+                        <span class="stat-value" id="total-events">0</span>
+                    </div>
+                    <div class="stat-mini">
+                        <span class="stat-label">Peak Hour</span>
+                        <span class="stat-value" id="peak-hour">00</span>
+                    </div>
+                </div>
+                <div class="stream-items" id="activity-stream">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+            
+            <!-- Top Products -->
+            <div class="panel-section product-breakdown">
+                <div class="section-header">
+                    <h3><span class="icon">📱</span> Top Products</h3>
+                    <button class="section-expand" id="expand-products">▼</button>
+                </div>
+                
+                <!-- Product stats row -->
+                <div class="product-stats-row">
+                    <div class="product-stat">
+                        <span class="stat-label">Dominant</span>
+                        <span class="stat-value" id="dominant-product">YouTube</span>
+                    </div>
+                    <div class="product-stat">
+                        <span class="stat-label">Coverage</span>
+                        <span class="stat-value" id="product-coverage">73.9%</span>
+                    </div>
+                    <div class="product-stat">
+                        <span class="stat-label">Diversity</span>
+                        <span class="stat-value diversity-score" id="diversity-index">2.1</span>
+                    </div>
+                </div>
+
+                <!-- Product bars -->
+                <div class="product-bars" id="product-bars-container">
+                    <!-- Generated by JS -->
+                </div>
+
+                <!-- Product correlation insights -->
+                <div class="product-insights">
+                    <h4>Product Insights</h4>
+                    <div class="insight-items" id="product-insights-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dimensional Pulse -->
+            <div class="panel-section dimension-pulse">
+                <div class="section-header">
+                    <h3><span class="icon">🔮</span> Dimensional Pulse</h3>
+                    <span class="section-hint">PCA Feature Variance</span>
+                </div>
+                
+                <div class="pulse-grid" id="pulse-grid-container">
+                    <!-- Generated by JS -->
+                </div>
+
+                <div class="pulse-analytics">
+                    <div class="variance-bar">
+                        <div class="variance-title">Cumulative Variance</div>
+                        <div class="variance-track">
+                            <div class="variance-fill" id="variance-cumulative" style="width: 40.6%">40.6%</div>
+                        </div>
+                    </div>
+                    <div class="dimension-stats">
+                        <div class="dim-stat">
+                            <span class="dim-label">Feature Count</span>
+                            <span class="dim-value" id="feature-count">352</span>
+                        </div>
+                        <div class="dim-stat">
+                            <span class="dim-label">Silhouette</span>
+                            <span class="dim-value" id="silhouette-score">0.18</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="correlation-heatmap">
+                    <h4>Feature Correlation Matrix (Top 5 PC)</h4>
+                    <div class="heatmap-grid" id="correlation-heatmap">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Keyword Nebula -->
+            <div class="panel-section keywords-nebula">
+                <div class="section-header">
+                    <h3><span class="icon">💫</span> Keyword Nebula</h3>
+                    <button class="section-expand" id="expand-keywords">▼</button>
+                </div>
+
+                <div class="keyword-stats">
+                    <div class="keyword-stat">
+                        <span class="stat-label">Unique Keywords</span>
+                        <span class="stat-value" id="unique-keywords">47</span>
+                    </div>
+                    <div class="keyword-stat">
+                        <span class="stat-label">Trending</span>
+                        <span class="stat-value trending-up" id="trending-keywords">3</span>
+                    </div>
+                </div>
+
+                <div class="keywords-cloud" id="keywords-cloud-container">
+                    <!-- Generated by JS -->
+                </div>
+
+                <div class="keyword-relationships">
+                    <h4>Keyword Co-occurrence</h4>
+                    <div class="relationship-items" id="keyword-relations">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+
+                <div class="trend-analysis">
+                    <h4>Activity Insights</h4>
+                    <div class="insight-list" id="trend-insights">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engagement Heatmap -->
+            <div class="panel-section engagement-heatmap">
+                <div class="section-header">
+                    <h3><span class="icon">🔥</span> Engagement Heatmap</h3>
+                    <span class="section-hint">Hour × Product Matrix</span>
+                </div>
+                <div class="heatmap-container" id="engagement-heatmap">
+                    <!-- Generated by JS -->
+                </div>
+                <div class="heatmap-legend">
+                    <span class="legend-label">Low</span>
+                    <div class="legend-gradient"></div>
+                    <span class="legend-label">High</span>
+                </div>
+            </div>
+
+            <!-- Analytics Summary -->
+            <div class="panel-section analytics-summary">
+                <h3><span class="icon">📊</span> Analytics Summary</h3>
+                <div class="summary-metrics">
+                    <div class="summary-card">
+                        <span class="card-label">Engagement Score</span>
+                        <span class="card-value" id="engagement-score">87.5</span>
+                        <span class="card-unit">%</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="card-label">Activity Volatility</span>
+                        <span class="card-value" id="volatility-index">65.3</span>
+                        <span class="card-unit">%</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="card-label">Cluster Density</span>
+                        <span class="card-value" id="cluster-density">100</span>
+                        <span class="card-unit">%</span>
+                    </div>
+                </div>
+
+                <div class="recommendations-box">
+                    <h4>🎯 Deep Behavioral Insights</h4>
+                    <div class="recommendations-list" id="recommendations">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Anomalies Detection -->
+            <div class="panel-section anomalies-panel">
+                <h3><span class="icon">⚠️</span> Anomaly Detection</h3>
+                <div id="anomalies-section">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Predictive Analysis -->
+            <div class="panel-section predictions-panel">
+                <h3><span class="icon">🔮</span> Predictive Analysis</h3>
+                <div id="predictions-section">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Session Analysis -->
+            <div class="panel-section sessions-panel">
+                <h3><span class="icon">⏱️</span> Session Patterns</h3>
+                <div id="sessions-section">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-left">
+                <span class="dimensional-badge">
+                    <span class="pulse-dot"></span>
+                    49-DIMENSIONAL PROJECTION
+                </span>
+            </div>
+            <div class="footer-center">
+                <span>K-Means Clustering</span>
+                <span class="sep">•</span>
+                <span>PCA Reduction</span>
+                <span class="sep">•</span>
+                <span>December 25, 2025</span>
+            </div>
+            <div class="footer-right">
+                <span class="tech-badge">Canvas 2D</span>
+                <span class="tech-badge">WebGL Ready</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="data-loader.js"></script>
+    <script src="analytics.js"></script>
+    <script src="ui-renderer.js"></script>
+    <script src="tesseract.js"></script>
+    <script src="quantum.js"></script>
+    <script src="galaxy.js"></script>
+    <script src="atomic.js"></script>
+    <script src="neural.js"></script>
+    <script src="spectral.js"></script>
+    <script src="waveform.js"></script>
+    <script src="manifold.js"></script>
+    <script src="main.js"></script>
+    
+    <!-- DEBUG: Inject test content to verify rendering -->
+    <script>
+        // Immediate injection - don't wait
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait just a bit for analytics to init
+            setTimeout(() => {
+                if (typeof globalAnalytics === 'undefined') {
+                    console.log('globalAnalytics not ready, retrying...');
+                    setTimeout(arguments.callee, 500);
+                    return;
+                }
+                
+                console.log('=== FORCE POPULATING CONTAINERS ===');
+                const ga = globalAnalytics;
+                
+                // Recommendations - Behavioral
+                const recs = document.querySelector('#recommendations');
+                if (recs && ga.behavioralProfiles) {
+                    recs.innerHTML = `
+                        <div style="padding: 10px; color: #00ff88;">
+                            <div style="font-weight: bold;">User Archetypes: ${ga.behavioralProfiles.userArchetypes.length}</div>
+                            ${ga.behavioralProfiles.userArchetypes.map(a => `<div>${a.name} (${a.score.toFixed(1)}%)</div>`).join('')}
+                            <div style="margin-top: 10px; font-weight: bold;">Patterns:</div>
+                            ${Object.entries(ga.behavioralProfiles.consumptionPatterns).map(([k,v]) => `<div>${k}: ${v}%</div>`).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Anomalies
+                const anom = document.querySelector('#anomalies-section');
+                if (anom && ga.anomalies) {
+                    const alerts = ga.anomalies.alerts || [];
+                    anom.innerHTML = `
+                        <div style="padding: 10px; color: #00ff88;">
+                            <div style="font-weight: bold;">Outlier Clusters: ${(ga.anomalies.outlierClusters || []).length}</div>
+                            <div style="font-weight: bold;">Alerts: ${alerts.length}</div>
+                            ${alerts.length === 0 ? '<div>✓ All normal</div>' : alerts.map(a => `<div>${a.message}</div>`).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Predictions
+                const pred = document.querySelector('#predictions-section');
+                if (pred && ga.predictiveMetrics) {
+                    const pm = ga.predictiveMetrics;
+                    pred.innerHTML = `
+                        <div style="padding: 10px; color: #00ff88;">
+                            <div><b>Trajectory:</b> ${pm.engagementTrajectory}</div>
+                            <div><b>Next Action:</b> ${pm.likelyNextAction}</div>
+                            <div><b>Session Freq:</b> ${pm.sessionPrediction?.frequency || 'daily'}</div>
+                            <div><b>Peak Hour:</b> ${pm.sessionPrediction?.peakSessionHour || 22}:00</div>
+                        </div>
+                    `;
+                }
+                
+                // Sessions
+                const sess = document.querySelector('#sessions-section');
+                if (sess && ga.sessionAnalysis) {
+                    const sa = ga.sessionAnalysis;
+                    sess.innerHTML = `
+                        <div style="padding: 10px; color: #00ff88;">
+                            <div><b>Avg Duration:</b> ${sa.averageSessionDuration}</div>
+                            <div><b>Active Hours:</b> ${sa.sessionsPerDay}</div>
+                            <div><b>Peak Hour:</b> ${sa.peakSessionHour}:00</div>
+                            <div style="margin-top: 10px;"><b>Productive Hours:</b></div>
+                            <div>${sa.mostProductiveHours?.map(h => `${h.hour}h (${h.events})`).join(', ')}</div>
+                        </div>
+                    `;
+                }
+            }, 500);
+        });
+        
+        setTimeout(() => {
+            console.log('=== DEBUG: Checking containers ===');
+            
+            // Check if containers exist
+            const recs = document.getElementById('recommendations');
+            const anom = document.getElementById('anomalies-section');
+            const pred = document.getElementById('predictions-section');
+            const sess = document.getElementById('sessions-section');
+            
+            console.log('recommendations exists:', !!recs);
+            console.log('anomalies-section exists:', !!anom);
+            console.log('predictions-section exists:', !!pred);
+            console.log('sessions-section exists:', !!sess);
+            
+            // Check analytics state
+            if (typeof globalAnalytics !== 'undefined') {
+                console.log('globalAnalytics exists');
+                console.log('Behavioral profiles:', !!globalAnalytics.behavioralProfiles);
+                console.log('Anomalies:', !!globalAnalytics.anomalies);
+                console.log('Predictions:', !!globalAnalytics.predictiveMetrics);
+                console.log('Sessions:', !!globalAnalytics.sessionAnalysis);
+                
+                // FORCE render the data
+                console.log('FORCING render of all sections...');
+                
+                // Behavioral insights
+                if (recs && globalAnalytics.behavioralProfiles) {
+                    const bp = globalAnalytics.behavioralProfiles;
+                    let html = '<div class="insights-grid">';
+                    if (bp.userArchetypes && bp.userArchetypes.length > 0) {
+                        const arch = bp.userArchetypes[0];
+                        html += `<div class="insight-card"><div class="insight-header">👤 Archetype</div><div class="insight-value">${arch.name}</div><div class="insight-meta">${arch.score.toFixed(1)}%</div></div>`;
+                    }
+                    const patterns = bp.consumptionPatterns || {};
+                    const patternsArr = Object.entries(patterns).sort((a,b) => b[1]-a[1]);
+                    if (patternsArr.length > 0) {
+                        html += `<div class="insight-card"><div class="insight-header">📊 Pattern</div><div class="insight-value">${patternsArr[0][0]}</div><div class="insight-meta">${patternsArr[0][1]}%</div></div>`;
+                    }
+                    html += '</div>';
+                    recs.innerHTML = html;
+                    console.log('✅ Injected behavioral data to recommendations');
+                }
+                
+                // Anomalies
+                if (anom && globalAnalytics.anomalies) {
+                    const an = globalAnalytics.anomalies;
+                    let html = '<div class="anomalies-list">';
+                    if (an.alerts && an.alerts.length > 0) {
+                        an.alerts.forEach(a => {
+                            html += `<div class="anomaly-alert medium"><span class="alert-icon">⚠️</span><div><div class="alert-message">${a.message}</div></div></div>`;
+                        });
+                    } else {
+                        html = '<div class="status-normal">✓ All patterns normal</div>';
+                    }
+                    html += '</div>';
+                    anom.innerHTML = html;
+                    console.log('✅ Injected anomaly data');
+                }
+                
+                // Predictions
+                if (pred && globalAnalytics.predictiveMetrics) {
+                    const pm = globalAnalytics.predictiveMetrics;
+                    let html = '<div class="predictions-grid">';
+                    html += `<div class="prediction-card"><div class="prediction-header">📈 Trajectory</div><div class="prediction-value">${pm.engagementTrajectory || 'stable'}</div></div>`;
+                    html += `<div class="prediction-card"><div class="prediction-header">🎯 Next Action</div><div class="prediction-value">${pm.likelyNextAction || 'unknown'}</div></div>`;
+                    const session = pm.sessionPrediction || {};
+                    html += `<div class="prediction-card"><div class="prediction-header">⏱️ Session</div><div class="prediction-value">${session.frequency || 'Daily'}</div></div>`;
+                    html += '</div>';
+                    pred.innerHTML = html;
+                    console.log('✅ Injected prediction data');
+                }
+                
+                // Sessions
+                if (sess && globalAnalytics.sessionAnalysis) {
+                    const sa = globalAnalytics.sessionAnalysis;
+                    let html = '<div class="session-details">';
+                    html += '<div class="session-summary">';
+                    html += `<div class="session-metric"><span class="metric-label">Avg Duration</span><span class="metric-value">${sa.averageSessionDuration || '0'}</span></div>`;
+                    html += `<div class="session-metric"><span class="metric-label">Active Hours</span><span class="metric-value">${sa.sessionsPerDay || '0'}</span></div>`;
+                    html += `<div class="session-metric"><span class="metric-label">Peak Hour</span><span class="metric-value">${sa.peakSessionHour || '22'}:00</span></div>`;
+                    html += '</div>';
+                    if (sa.mostProductiveHours && sa.mostProductiveHours.length > 0) {
+                        html += '<div class="productive-hours"><span class="label">Productive Hours:</span>';
+                        sa.mostProductiveHours.forEach(h => {
+                            html += `<span class="hour-tag">${String(h.hour).padStart(2,'0')}h (${h.events})</span>`;
+                        });
+                        html += '</div>';
+                    }
+                    html += '</div>';
+                    sess.innerHTML = html;
+                    console.log('✅ Injected session data');
+                }
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

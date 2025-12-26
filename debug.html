@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Debug</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0e27;
+            color: #00ff88;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        pre {
+            background: #1a1e3f;
+            padding: 15px;
+            border: 1px solid #00ff88;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        h2 {
+            color: #00ffff;
+            margin-top: 30px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #1a1e3f;
+            border-left: 4px solid #00ff88;
+        }
+        .error {
+            border-left-color: #ff4444;
+            background: #3f1a1a;
+        }
+        .success {
+            border-left-color: #44ff44;
+            background: #1a3f1a;
+        }
+    </style>
+</head>
+<body>
+    <h1>📊 Analytics Debug Console</h1>
+    <div id="output"></div>
+
+    <script src="data.js"></script>
+    <script src="analytics.js"></script>
+    <script>
+        // Capture errors
+        const errors = [];
+        window.addEventListener('error', (e) => {
+            errors.push({
+                message: e.message,
+                filename: e.filename,
+                lineno: e.lineno
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const output = document.getElementById('output');
+            let html = '';
+
+            // Show errors
+            if (errors.length > 0) {
+                html += '<div class="section error"><h2>❌ JavaScript Errors</h2><pre>' + JSON.stringify(errors, null, 2) + '</pre></div>';
+            }
+
+            if (typeof activityData !== 'undefined') {
+                html += '<div class="section success"><h2>✅ Data Loaded</h2><pre>' + JSON.stringify(activityData.metadata, null, 2) + '</pre></div>';
+            } else {
+                html += '<div class="section error"><h2>❌ No activityData</h2></div>';
+            }
+
+            setTimeout(() => {
+                if (typeof globalAnalytics !== 'undefined' && globalAnalytics) {
+                    html = '';
+                    
+                    if (errors.length > 0) {
+                        html += '<div class="section error"><h2>❌ JavaScript Errors</h2><pre>' + JSON.stringify(errors, null, 2) + '</pre></div>';
+                    }
+
+                    html += '<div class="section success"><h2>✅ globalAnalytics Initialized</h2>';
+                    
+                    html += '<h3>📋 Behavioral Profiles:</h3><pre>' + JSON.stringify(globalAnalytics.behavioralProfiles, null, 2) + '</pre>';
+                    html += '<h3>⚠️ Anomalies:</h3><pre>' + JSON.stringify(globalAnalytics.anomalies, null, 2) + '</pre>';
+                    html += '<h3>🔮 Predictive Metrics:</h3><pre>' + JSON.stringify(globalAnalytics.predictiveMetrics, null, 2) + '</pre>';
+                    html += '<h3>⏱️ Session Analysis:</h3><pre>' + JSON.stringify(globalAnalytics.sessionAnalysis, null, 2) + '</pre>';
+                    
+                    html += '</div>';
+                    
+                    output.innerHTML = html;
+                } else {
+                    html += '<div class="section"><h2>⏳ Waiting for globalAnalytics...</h2><p>Check browser console for initialization logs</p></div>';
+                    output.innerHTML = html;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

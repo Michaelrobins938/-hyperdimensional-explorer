@@ -1,0 +1,34 @@
+{
+  "name": "hyperdimensional-explorer",
+  "version": "1.0.0",
+  "description": "An interactive visualization tool for exploring high-dimensional data using multiple visualization techniques",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "dataviz",
+    "visualization",
+    "3d",
+    "canvas",
+    "webgl",
+    "interactive",
+    "d3",
+    "cluster",
+    "dimensionality-reduction"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/hyperdimensional-explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/hyperdimensional-explorer/issues"
+  },
+  "homepage": "https://your-username.github.io/hyperdimensional-explorer/"
+}

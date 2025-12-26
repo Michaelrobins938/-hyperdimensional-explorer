@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Link Test</title>
+</head>
+<body style="background: #111; color: #fff; padding: 2rem; font-family: monospace;">
+    <h1>Simple Link Test - Click Each Link</h1>
+
+    <h2>From Root Directory:</h2>
+    <p><a href="portfolio.html" style="color: #8b5cf6;">1. Portfolio</a></p>
+    <p><a href="hyperdimensional-explorer-standalone.html" style="color: #8b5cf6;">2. Explorer (root)</a></p>
+    <p><a href="hyperdimensional-viz/ultimate-explorer.html" style="color: #8b5cf6;">3. Ultimate (subfolder)</a></p>
+    <p><a href="index.html" style="color: #8b5cf6;">4. Analytics (index)</a></p>
+
+    <hr style="margin: 2rem 0;">
+
+    <h2>Debug Info:</h2>
+    <p>Current URL: <span id="url"></span></p>
+    <p>Current Path: <span id="path"></span></p>
+
+    <script>
+        document.getElementById('url').textContent = window.location.href;
+        document.getElementById('path').textContent = window.location.pathname;
+    </script>
+</body>
+</html>

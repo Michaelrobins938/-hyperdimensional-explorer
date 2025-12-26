@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 2rem;
+            background: #0a0a0f;
+            color: #fff;
+        }
+        .test-link {
+            display: block;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #1a1a2e;
+            border: 1px solid #8b5cf6;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .test-link:hover {
+            background: #2a2a3e;
+        }
+        .info {
+            background: #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Navigation Test Page</h1>
+
+    <div class="info">
+        <strong>Current Location:</strong> <span id="current-path"></span><br>
+        <strong>Current Directory:</strong> <span id="current-dir"></span>
+    </div>
+
+    <h2>Test Links (from ROOT):</h2>
+    <a href="portfolio.html" class="test-link">📊 Portfolio (portfolio.html)</a>
+    <a href="hyperdimensional-explorer-standalone.html" class="test-link">🔮 Explorer (hyperdimensional-explorer-standalone.html)</a>
+    <a href="hyperdimensional-viz/ultimate-explorer.html" class="test-link">✨ Ultimate (hyperdimensional-viz/ultimate-explorer.html)</a>
+    <a href="index.html" class="test-link">📈 Analytics (index.html)</a>
+
+    <script>
+        document.getElementById('current-path').textContent = window.location.pathname;
+        document.getElementById('current-dir').textContent = window.location.pathname.split('/').slice(0, -1).join('/');
+    </script>
+
+    <!-- Navigation Component -->
+    <script src="nav-component.js"></script>
+</body>
+</html>

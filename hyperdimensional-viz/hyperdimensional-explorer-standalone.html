@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperdimensional Activity Explorer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: rgba(26, 26, 37, 0.7);
+            --gradient-cosmic: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+            --text-primary: #fff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --glow-purple: 0 0 30px rgba(139, 92, 246, 0.3);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none
+        }
+
+        .app {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--space-lg);
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: var(--space-lg)
+        }
+
+        .header {
+            grid-column: 1/-1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-lg);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg)
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md)
+        }
+
+        .logo-orb {
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-cosmic);
+            border-radius: 50%;
+            box-shadow: var(--glow-purple);
+            animation: pulse 3s ease-in-out infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.05)
+            }
+        }
+
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-cosmic);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted)
+        }
+
+        .stats {
+            display: flex;
+            gap: var(--space-sm)
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-sm) var(--space-md);
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius-md)
+        }
+
+        .stat-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700
+        }
+
+        .stat-lbl {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase
+        }
+
+        .nav {
+            grid-column: 1/-1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            padding: var(--space-sm);
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg)
+        }
+
+        .nav-btn {
+            flex: 1;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: var(--space-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05)
+        }
+
+        .nav-btn.active {
+            color: var(--text-primary);
+            background: var(--gradient-cosmic);
+            box-shadow: var(--glow-purple)
+        }
+
+        .main {
+            grid-column: 1
+        }
+
+        .viz-section {
+            display: none;
+            animation: fadeIn 0.3s ease
+        }
+
+        .viz-section.active {
+            display: block
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .viz-header {
+            margin-bottom: var(--space-md)
+        }
+
+        .viz-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm)
+        }
+
+        .viz-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 4px
+        }
+
+        .viz-box {
+            position: relative;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            min-height: 480px
+        }
+
+        .viz-box canvas {
+            display: block;
+            width: 100%;
+            height: 440px
+        }
+
+        .controls {
+            position: absolute;
+            bottom: var(--space-lg);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--space-sm);
+            background: rgba(10, 10, 15, 0.9);
+            padding: var(--space-sm);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-subtle)
+        }
+
+        .ctrl-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            cursor: pointer
+        }
+
+        .ctrl-btn:hover,
+        .ctrl-btn.active {
+            color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--accent-purple)
+        }
+
+        .legend {
+            position: absolute;
+            top: var(--space-lg);
+            right: var(--space-lg);
+            background: rgba(10, 10, 15, 0.9);
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle)
+        }
+
+        .legend h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: var(--space-sm)
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            padding: 3px 0;
+            cursor: pointer
+        }
+
+        .legend-item:hover {
+            color: var(--text-primary)
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%
+        }
+
+        .sidebar {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            height: fit-content;
+            position: sticky;
+            top: var(--space-lg)
+        }
+
+        .sidebar-header {
+            padding: var(--space-md);
+            background: var(--gradient-cosmic)
+        }
+
+        .sidebar-header h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600
+        }
+
+        .sidebar-content {
+            padding: var(--space-md)
+        }
+
+        .info-row {
+            margin-bottom: var(--space-sm)
+        }
+
+        .info-lbl {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase
+        }
+
+        .info-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600
+        }
+
+        @media(max-width:1000px) {
+            .app {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                grid-column: 1
+            }
+        }
+
+        @media(max-width:600px) {
+            .nav-btn span {
+                display: none
+            }
+
+            .header {
+                flex-direction: column;
+                gap: var(--space-md)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Component -->
+    <script src="../nav-component.js"></script>
+    <div class="app">
+        <canvas id="bg" class="bg-canvas"></canvas>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-orb"></div>
+                <div>
+                    <h1 class="title">Hyperdimensional Explorer</h1>
+                    <p class="subtitle">312 Dimensions → 8 Clusters → ∞ Insights</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat"><span class="stat-val">5,929</span><span class="stat-lbl">Events</span></div>
+                <div class="stat"><span class="stat-val">73%</span><span class="stat-lbl">YouTube</span></div>
+                <div class="stat"><span class="stat-val">312</span><span class="stat-lbl">Dimensions</span></div>
+            </div>
+        </header>
+        <nav class="nav">
+            <button class="nav-btn active" data-v="cosmos">🌌 <span>Cosmos</span></button>
+            <button class="nav-btn" data-v="parallel">📊 <span>Parallel</span></button>
+            <button class="nav-btn" data-v="heatmap">🔥 <span>Temporal</span></button>
+            <button class="nav-btn" data-v="network">🕸️ <span>Network</span></button>
+            <button class="nav-btn" data-v="flow">🌊 <span>Flow</span></button>
+            <button class="nav-btn" data-v="umap">🔮 <span>UMAP</span></button>
+            <button class="nav-btn" data-v="tree">🌳 <span>Tree</span></button>
+            <button class="nav-btn" data-v="radar">🎯 <span>Radar</span></button>
+            <button class="nav-btn" data-v="ridge">📈 <span>Ridge</span></button>
+            <button class="nav-btn" data-v="chord">🔗 <span>Chord</span></button>
+        </nav>
+        <main class="main">
+            <section id="cosmos" class="viz-section active">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌌 Behavioral Cosmos</h2>
+                    <p class="viz-desc">8 clusters as celestial bodies. Points orbit their cluster centroids.</p>
+                </div>
+                <div class="viz-box"><canvas id="cosmos-c"></canvas>
+                    <div class="legend" id="cosmos-leg"></div>
+                    <div class="controls"><button class="ctrl-btn active" id="rotate-btn">🔄 Rotate</button><button
+                            class="ctrl-btn" id="explode-btn">💥 Explode</button></div>
+                </div>
+            </section>
+            <section id="parallel" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">📊 Parallel Coordinates</h2>
+                    <p class="viz-desc">All dimensions simultaneously. Each line is one activity.</p>
+                </div>
+                <div class="viz-box"><canvas id="parallel-c"></canvas></div>
+            </section>
+            <section id="heatmap" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔥 Temporal Heatmap</h2>
+                    <p class="viz-desc">Activity intensity by day and hour.</p>
+                </div>
+                <div class="viz-box"><canvas id="heatmap-c"></canvas></div>
+            </section>
+            <section id="network" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🕸️ Activity Network</h2>
+                    <p class="viz-desc">Force-directed graph of relationships.</p>
+                </div>
+                <div class="viz-box"><canvas id="network-c"></canvas></div>
+            </section>
+            <section id="flow" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌊 State Flow</h2>
+                    <p class="viz-desc">Animated transitions between activity states.</p>
+                </div>
+                <div class="viz-box"><canvas id="flow-c"></canvas></div>
+            </section>
+            <section id="umap" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔮 UMAP Projection</h2>
+                    <p class="viz-desc">Dimensionality reduction with animated morphing.</p>
+                </div>
+                <div class="viz-box"><canvas id="umap-c"></canvas>
+                    <div class="controls"><button class="ctrl-btn" id="morph-btn">🔄 Morph</button><button
+                            class="ctrl-btn" id="trail-btn">✨ Trails</button></div>
+                </div>
+            </section>
+            <section id="tree" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🌳 Radial Hierarchy</h2>
+                    <p class="viz-desc">Activity structure as an orbital system.</p>
+                </div>
+                <div class="viz-box"><canvas id="tree-c"></canvas></div>
+            </section>
+            <section id="radar" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🎯 Behavioral Radar</h2>
+                    <p class="viz-desc">Multi-axis profile across 8 dimensions.</p>
+                </div>
+                <div class="viz-box"><canvas id="radar-c"></canvas></div>
+            </section>
+            <section id="ridge" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">📈 Ridge Landscape</h2>
+                    <p class="viz-desc">3D stacked daily distributions.</p>
+                </div>
+                <div class="viz-box"><canvas id="ridge-c"></canvas></div>
+            </section>
+            <section id="chord" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">🔗 Chord Transitions</h2>
+                    <p class="viz-desc">Circular flow between product categories.</p>
+                </div>
+                <div class="viz-box"><canvas id="chord-c"></canvas></div>
+            </section>
+        </main>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Dimensional Analysis</h3>
+            </div>
+            <div class="sidebar-content">
+                <div class="info-row">
+                    <div class="info-lbl">Feature Matrix</div>
+                    <div class="info-val">5,929 × 312</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Sparsity</div>
+                    <div class="info-val">94%</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Variance PC1</div>
+                    <div class="info-val">2.5%</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-lbl">Silhouette</div>
+                    <div class="info-val">0.68</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <script>
+        // DATA
+        const D = {
+            hourly: [218, 298, 208, 184, 200, 225, 250, 187, 239, 203, 269, 275, 178, 191, 239, 193, 319, 244, 267, 309, 280, 255, 350, 348],
+            clusters: [{ id: 0, size: 4041, lbl: 'YT Core' }, { id: 1, size: 39, lbl: 'YT Alt' }, { id: 2, size: 1334, lbl: 'Search' }, { id: 3, size: 104, lbl: 'AI Tools' }, { id: 4, size: 114, lbl: 'E-commerce' }, { id: 5, size: 63, lbl: 'Late Night' }, { id: 6, size: 63, lbl: 'Printify' }, { id: 7, size: 171, lbl: 'YT Deep' }],
+            colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308', '#22c55e', '#06b6d4'],
+            genPts(n = 350) { const pts = [], ctrs = [{ x: -40, y: 20, z: 10 }, { x: -35, y: 25, z: 15 }, { x: 30, y: -20, z: -10 }, { x: 25, y: -10, z: 5 }, { x: 40, y: 30, z: -20 }, { x: -20, y: -30, z: 25 }, { x: 10, y: 35, z: 30 }, { x: -10, y: -25, z: -15 }], tot = this.clusters.reduce((s, c) => s + c.size, 0); for (let i = 0; i < n; i++) { let r = Math.random() * tot, cid = 0, cs = 0; for (let c = 0; c < 8; c++) { cs += this.clusters[c].size; if (r <= cs) { cid = c; break } } const ct = ctrs[cid], sp = cid === 0 ? 25 : (cid === 2 ? 20 : 12); pts.push({ x: ct.x + (Math.random() - 0.5) * sp, y: ct.y + (Math.random() - 0.5) * sp, z: ct.z + (Math.random() - 0.5) * sp, c: cid, h: Math.floor(Math.random() * 24), d1: Math.random(), d2: Math.random(), d3: Math.random(), trail: [] }) } return pts }
+        };
+        // NAV
+        const btns = document.querySelectorAll('.nav-btn'), secs = document.querySelectorAll('.viz-section');
+        let viz = {};
+        btns.forEach(b => b.addEventListener('click', () => { btns.forEach(x => x.classList.remove('active')); b.classList.add('active'); secs.forEach(s => s.classList.remove('active')); document.getElementById(b.dataset.v).classList.add('active'); init(b.dataset.v) }));
+        function init(v) { if (viz[v]) return; switch (v) { case 'cosmos': viz.cosmos = new Cosmos(); break; case 'parallel': viz.parallel = new Parallel(); break; case 'heatmap': viz.heatmap = new Heatmap(); break; case 'network': viz.network = new Network(); break; case 'flow': viz.flow = new Flow(); break; case 'umap': viz.umap = new UMAP(); break; case 'tree': viz.tree = new Tree(); break; case 'radar': viz.radar = new Radar(); break; case 'ridge': viz.ridge = new Ridge(); break; case 'chord': viz.chord = new Chord(); break } }
+        setTimeout(() => init('cosmos'), 0);
+        // BG
+        (function () { const c = document.getElementById('bg'), x = c.getContext('2d'), ps = []; function rs() { c.width = innerWidth; c.height = innerHeight } rs(); addEventListener('resize', rs); for (let i = 0; i < 40; i++)ps.push({ x: Math.random() * c.width, y: Math.random() * c.height, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 2 + 1, col: D.colors[Math.floor(Math.random() * 8)] }); function an() { x.fillStyle = 'rgba(10,10,15,0.05)'; x.fillRect(0, 0, c.width, c.height); ps.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > c.width) p.vx *= -1; if (p.y < 0 || p.y > c.height) p.vy *= -1; x.beginPath(); x.arc(p.x, p.y, p.r, 0, Math.PI * 2); x.fillStyle = p.col + '40'; x.fill() }); for (let i = 0; i < ps.length; i++)for (let j = i + 1; j < ps.length; j++) { const d = Math.hypot(ps[i].x - ps[j].x, ps[i].y - ps[j].y); if (d < 100) { x.beginPath(); x.moveTo(ps[i].x, ps[i].y); x.lineTo(ps[j].x, ps[j].y); x.strokeStyle = `rgba(139,92,246,${0.1 * (1 - d / 100)})`; x.stroke() } } requestAnimationFrame(an) } an() })();
+        // COSMOS
+        class Cosmos { constructor() { this.c = document.getElementById('cosmos-c'); this.x = this.c.getContext('2d'); this.pts = D.genPts(300); this.rot = { x: 0.3, y: 0 }; this.auto = true; this.exp = false; this.rs(); this.leg(); document.getElementById('rotate-btn').onclick = e => { this.auto = !this.auto; e.target.classList.toggle('active', this.auto) }; document.getElementById('explode-btn').onclick = e => { this.exp = !this.exp; e.target.classList.toggle('active', this.exp) }; addEventListener('resize', () => this.rs()); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } leg() { const l = document.getElementById('cosmos-leg'); l.innerHTML = '<h4>Clusters</h4>' + D.clusters.map((c, i) => `<div class="legend-item"><span class="legend-dot" style="background:${D.colors[i]}"></span>${c.lbl}</div>`).join('') } proj(p) { const e = this.exp ? 2.5 : 1; let x = p.x * e, y = p.y * e, z = p.z * e; const cy = Math.cos(this.rot.y), sy = Math.sin(this.rot.y); let tx = x * cy - z * sy; z = x * sy + z * cy; x = tx; const cx = Math.cos(this.rot.x), sx = Math.sin(this.rot.x); let ty = y * cx - z * sx; z = y * sx + z * cx; y = ty; const s = 300 / (300 + z) * 4; return { x: this.cx + x * s, y: this.cy + y * s, z, s } } draw() { const x = this.x; x.fillStyle = 'rgba(10,10,15,0.2)'; x.fillRect(0, 0, this.c.width, this.c.height); if (this.auto) this.rot.y += 0.003; const pr = this.pts.map(p => ({ ...p, pj: this.proj(p) })).sort((a, b) => a.pj.z - b.pj.z); pr.forEach(p => { x.beginPath(); x.arc(p.pj.x, p.pj.y, p.pj.s * 2.5, 0, Math.PI * 2); x.fillStyle = D.colors[p.c] + 'cc'; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // PARALLEL
+        class Parallel { constructor() { this.c = document.getElementById('parallel-c'); this.x = this.c.getContext('2d'); this.pts = D.genPts(200); this.axes = ['Product', 'Hour', 'Dim1', 'Dim2', 'Dim3', 'Cluster']; this.rs(); addEventListener('resize', () => { this.rs(); this.draw() }); this.draw() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.m = { l: 60, r: 40, t: 40, b: 60 }; this.w = this.c.width - this.m.l - this.m.r; this.h = this.c.height - this.m.t - this.m.b } draw() { const x = this.x, sp = this.w / (this.axes.length - 1); x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); x.strokeStyle = 'rgba(255,255,255,0.2)'; x.lineWidth = 1; this.axes.forEach((_, i) => { const ax = this.m.l + i * sp; x.beginPath(); x.moveTo(ax, this.m.t); x.lineTo(ax, this.m.t + this.h); x.stroke() }); this.pts.forEach(p => { const vals = [p.c / 7, p.h / 23, p.d1, p.d2, p.d3, p.c / 7]; x.beginPath(); vals.forEach((v, i) => { const px = this.m.l + i * sp, py = this.m.t + (1 - v) * this.h; i === 0 ? x.moveTo(px, py) : x.lineTo(px, py) }); x.strokeStyle = D.colors[p.c] + '50'; x.lineWidth = 1.5; x.stroke() }); x.fillStyle = '#9ca3af'; x.font = '11px Inter'; x.textAlign = 'center'; this.axes.forEach((a, i) => { x.fillText(a, this.m.l + i * sp, this.c.height - 20) }) } }
+        // HEATMAP
+        class Heatmap { constructor() { this.c = document.getElementById('heatmap-c'); this.x = this.c.getContext('2d'); this.data = this.gen(); this.rs(); addEventListener('resize', () => { this.rs(); this.draw() }); this.draw() } gen() { const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], d = []; for (let dy = 0; dy < 7; dy++)for (let h = 0; h < 24; h++) { let v = D.hourly[h] / 350; if ((dy === 0 || dy === 6) && (h >= 20 || h <= 2)) v *= 1.3; if (dy >= 1 && dy <= 5 && h >= 9 && h <= 17) v *= 0.8; d.push({ dy, h, v: Math.min(1, v * (0.8 + Math.random() * 0.4)), dl: days[dy] }) } return d } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.m = { l: 60, r: 60, t: 30, b: 50 } } draw() { const x = this.x, iw = this.c.width - this.m.l - this.m.r, ih = this.c.height - this.m.t - this.m.b, cw = iw / 24, ch = ih / 7; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); this.data.forEach(d => { const px = this.m.l + d.h * cw, py = this.m.t + d.dy * ch; x.fillStyle = this.hc(d.v); x.fillRect(px + 1, py + 1, cw - 2, ch - 2) }); x.fillStyle = '#9ca3af'; x.font = '10px Inter'; x.textAlign = 'right';['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach((d, i) => x.fillText(d, this.m.l - 8, this.m.t + i * ch + ch / 2 + 4)); x.textAlign = 'center'; for (let h = 0; h < 24; h += 3)x.fillText(`${h}h`, this.m.l + h * cw + cw / 2, this.c.height - 20) } hc(v) { const cs = [[26, 26, 37], [99, 102, 241], [139, 92, 246], [236, 72, 153], [244, 63, 94]], st = [0, 0.33, 0.66, 0.85, 1]; let i = 0; while (i < st.length - 1 && v > st[i + 1]) i++; const t = (v - st[i]) / (st[i + 1] - st[i]), c1 = cs[i], c2 = cs[Math.min(i + 1, 4)]; return `rgb(${Math.round(c1[0] + (c2[0] - c1[0]) * t)},${Math.round(c1[1] + (c2[1] - c1[1]) * t)},${Math.round(c1[2] + (c2[2] - c1[2]) * t)})` } }
+        // NETWORK
+        class Network { constructor() { this.c = document.getElementById('network-c'); this.x = this.c.getContext('2d'); this.nodes = []; this.edges = []; this.init(); this.rs(); this.an() } init() { const prods = [{ n: 'YouTube', c: '#ff0000', v: 4336 }, { n: 'Search', c: '#4285f4', v: 296 }, { n: 'AI Tools', c: '#8b5cf6', v: 104 }, { n: 'E-comm', c: '#22c55e', v: 177 }, { n: 'Other', c: '#607d8b', v: 957 }]; prods.forEach((p, i) => { const a = i / prods.length * Math.PI * 2; this.nodes.push({ id: i, lbl: p.n, col: p.c, r: 15 + p.v / 200, x: 300 + Math.cos(a) * 120, y: 220 + Math.sin(a) * 120, vx: 0, vy: 0 }) }); this.edges = [{ s: 0, t: 0, v: 3967 }, { s: 1, t: 1, v: 168 }, { s: 1, t: 0, v: 84 }, { s: 0, t: 1, v: 76 }] } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440 } sim() { const k = 0.01, rep = 2000, damp = 0.9; this.nodes.forEach((n1, i) => { this.nodes.forEach((n2, j) => { if (i >= j) return; const dx = n2.x - n1.x, dy = n2.y - n1.y, d = Math.max(Math.hypot(dx, dy), 1), f = rep / (d * d); n1.vx -= dx / d * f; n1.vy -= dy / d * f; n2.vx += dx / d * f; n2.vy += dy / d * f }) }); this.edges.forEach(e => { const n1 = this.nodes[e.s], n2 = this.nodes[e.t]; if (!n1 || !n2 || n1 === n2) return; const dx = n2.x - n1.x, dy = n2.y - n1.y, d = Math.hypot(dx, dy), f = (d - 100) * k; n1.vx += dx / d * f; n1.vy += dy / d * f; n2.vx -= dx / d * f; n2.vy -= dy / d * f }); this.nodes.forEach(n => { n.vx *= damp; n.vy *= damp; n.x = Math.max(40, Math.min(this.c.width - 40, n.x + n.vx)); n.y = Math.max(40, Math.min(this.c.height - 40, n.y + n.vy)) }) } draw() { const x = this.x; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); this.edges.forEach(e => { const n1 = this.nodes[e.s], n2 = this.nodes[e.t]; if (!n1 || !n2) return; x.beginPath(); x.moveTo(n1.x, n1.y); x.lineTo(n2.x, n2.y); x.strokeStyle = `rgba(139,92,246,${0.1 + e.v / 5000})`; x.lineWidth = 1 + e.v / 1000; x.stroke() }); this.nodes.forEach(n => { x.beginPath(); x.arc(n.x, n.y, n.r, 0, Math.PI * 2); x.fillStyle = n.col; x.fill(); x.strokeStyle = 'rgba(255,255,255,0.3)'; x.stroke(); x.fillStyle = '#fff'; x.font = '11px Inter'; x.textAlign = 'center'; x.fillText(n.lbl, n.x, n.y + n.r + 14) }) } an() { this.sim(); this.draw(); requestAnimationFrame(() => this.an()) } }
+        // FLOW
+        class Flow { constructor() { this.c = document.getElementById('flow-c'); this.x = this.c.getContext('2d'); this.flows = [{ fx: 100, fy: 145, tx: 500, ty: 125, v: 3967, col: '#ff0000' }, { fx: 100, fy: 145, tx: 500, ty: 225, v: 76, col: '#f97316' }, { fx: 100, fy: 265, tx: 500, ty: 125, v: 84, col: '#4285f4' }, { fx: 100, fy: 265, tx: 500, ty: 225, v: 168, col: '#4285f4' }, { fx: 100, fy: 345, tx: 500, ty: 325, v: 52, col: '#8b5cf6' }]; this.particles = []; this.init(); this.rs(); this.an() } init() { this.flows.forEach((f, fi) => { const cnt = Math.ceil(f.v / 100); for (let i = 0; i < cnt; i++)this.particles.push({ fi, t: Math.random(), sp: 0.002 + Math.random() * 0.002, off: (Math.random() - 0.5) * f.v / 100 }) }) } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; const sx = this.c.width / 600; this.flows.forEach(f => { f.fxs = f.fx * sx; f.txs = f.tx * sx }) } bez(p0, p1, p2, p3, t) { const m = 1 - t; return m * m * m * p0 + 3 * m * m * t * p1 + 3 * m * t * t * p2 + t * t * t * p3 } draw() { const x = this.x; x.fillStyle = 'rgba(10,10,15,0.1)'; x.fillRect(0, 0, this.c.width, this.c.height); this.flows.forEach(f => { const w = Math.max(2, f.v / 100); x.beginPath(); x.moveTo(f.fxs, f.fy); const cx1 = f.fxs + (f.txs - f.fxs) * 0.4, cx2 = f.fxs + (f.txs - f.fxs) * 0.6; x.bezierCurveTo(cx1, f.fy, cx2, f.ty, f.txs, f.ty); x.strokeStyle = f.col + '30'; x.lineWidth = w; x.stroke() }); this.particles.forEach(p => { const f = this.flows[p.fi], px = this.bez(f.fxs, f.fxs + (f.txs - f.fxs) * 0.4, f.fxs + (f.txs - f.fxs) * 0.6, f.txs, p.t), py = this.bez(f.fy, f.fy, f.ty, f.ty, p.t) + p.off; x.beginPath(); x.arc(px, py, 3, 0, Math.PI * 2); x.fillStyle = f.col; x.fill(); p.t += p.sp; if (p.t > 1) p.t = 0 }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // UMAP
+        class UMAP { constructor() { this.c = document.getElementById('umap-c'); this.x = this.c.getContext('2d'); this.pts = this.gen(250); this.trails = false; this.time = 0; this.rs(); document.getElementById('morph-btn').onclick = () => this.morph(); document.getElementById('trail-btn').onclick = e => { this.trails = !this.trails; e.target.classList.toggle('active', this.trails) }; this.an() } gen(n) { const pts = [], ctrs = [{ x: 0.2, y: 0.25 }, { x: 0.15, y: 0.4 }, { x: 0.75, y: 0.3 }, { x: 0.6, y: 0.7 }, { x: 0.35, y: 0.8 }, { x: 0.85, y: 0.75 }, { x: 0.5, y: 0.5 }, { x: 0.25, y: 0.65 }], szs = [120, 12, 60, 25, 20, 15, 12, 12], tot = szs.reduce((a, b) => a + b, 0); for (let i = 0; i < n; i++) { let r = Math.random() * tot, cid = 0, cs = 0; for (let c = 0; c < 8; c++) { cs += szs[c]; if (r <= cs) { cid = c; break } } const ct = ctrs[cid], sp = cid === 0 ? 0.12 : (cid === 2 ? 0.1 : 0.06), a = Math.random() * Math.PI * 2, d = Math.random() * sp; pts.push({ x: ct.x + Math.cos(a) * d, y: ct.y + Math.sin(a) * d, bx: ct.x + Math.cos(a) * d, by: ct.y + Math.sin(a) * d, c: cid, ph: Math.random() * Math.PI * 2, trail: [] }) } return pts } morph() { const npts = this.gen(this.pts.length); this.pts.forEach((p, i) => { p.bx = npts[i].bx; p.by = npts[i].by }) } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440 } draw() { const x = this.x, w = this.c.width, h = this.c.height; x.fillStyle = 'rgba(10,10,15,0.08)'; x.fillRect(0, 0, w, h); this.time += 0.02; this.pts.forEach(p => { p.x += (p.bx - p.x) * 0.05 + Math.sin(this.time + p.ph) * 0.001; p.y += (p.by - p.y) * 0.05 + Math.cos(this.time * 0.7 + p.ph) * 0.001; p.trail.push({ x: p.x * w, y: p.y * h }); if (p.trail.length > 15) p.trail.shift(); if (this.trails && p.trail.length > 1) { x.beginPath(); x.moveTo(p.trail[0].x, p.trail[0].y); p.trail.forEach(t => x.lineTo(t.x, t.y)); x.strokeStyle = D.colors[p.c] + '50'; x.stroke() } x.beginPath(); x.arc(p.x * w, p.y * h, 4, 0, Math.PI * 2); x.fillStyle = D.colors[p.c]; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // TREE
+        class Tree { constructor() { this.c = document.getElementById('tree-c'); this.x = this.c.getContext('2d'); this.rot = 0; this.tree = { n: 'Activity', ch: [{ n: 'YouTube', c: '#ff0000', ch: [{ n: 'Core', c: '#6366f1', v: 4041 }, { n: 'Deep', c: '#8b5cf6', v: 171 }] }, { n: 'Search', c: '#4285f4', ch: [{ n: 'Focus', c: '#3b82f6', v: 800 }] }, { n: 'AI', c: '#9c27b0', ch: [{ n: 'Router', c: '#8b5cf6', v: 104 }] }, { n: 'Shop', c: '#22c55e', ch: [{ n: 'Shopify', c: '#22c55e', v: 114 }] }] }; this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.cx = this.c.width / 2; this.cy = this.c.height / 2 } draw() { const x = this.x; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); this.rot += 0.003;[100, 180].forEach(r => { x.beginPath(); x.arc(this.cx, this.cy, r, 0, Math.PI * 2); x.strokeStyle = 'rgba(99,102,241,0.15)'; x.stroke() }); x.beginPath(); x.arc(this.cx, this.cy, 30, 0, Math.PI * 2); x.fillStyle = '#8b5cf6'; x.fill(); x.fillStyle = '#fff'; x.font = 'bold 10px Outfit'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('Activity', this.cx, this.cy); this.tree.ch.forEach((ch, i) => { const a = i / this.tree.ch.length * Math.PI * 2 + this.rot, px = this.cx + Math.cos(a) * 100, py = this.cy + Math.sin(a) * 100; x.beginPath(); x.moveTo(this.cx, this.cy); x.lineTo(px, py); x.strokeStyle = 'rgba(139,92,246,0.4)'; x.stroke(); x.beginPath(); x.arc(px, py, 20, 0, Math.PI * 2); x.fillStyle = ch.c; x.fill(); x.fillStyle = '#fff'; x.font = '9px Outfit'; x.fillText(ch.n, px, py); if (ch.ch) ch.ch.forEach((c2, j) => { const a2 = a - 0.3 + j * 0.3, p2x = this.cx + Math.cos(a2) * 180, p2y = this.cy + Math.sin(a2) * 180; x.beginPath(); x.moveTo(px, py); x.lineTo(p2x, p2y); x.strokeStyle = 'rgba(139,92,246,0.3)'; x.stroke(); x.beginPath(); x.arc(p2x, p2y, 12, 0, Math.PI * 2); x.fillStyle = c2.c; x.fill(); x.fillStyle = '#fff'; x.font = '8px Inter'; x.fillText(c2.n, p2x, p2y) }) }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // RADAR
+        class Radar { constructor() { this.c = document.getElementById('radar-c'); this.x = this.c.getContext('2d'); this.data = [{ a: 'YouTube', v: 0.73 }, { a: 'Late Night', v: 0.24 }, { a: 'Search', v: 0.22 }, { a: 'AI Tools', v: 0.15 }, { a: 'E-comm', v: 0.12 }, { a: 'Morning', v: 0.18 }, { a: 'Afternoon', v: 0.25 }, { a: 'Evening', v: 0.35 }]; this.ph = 0; this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.cx = this.c.width / 2; this.cy = this.c.height / 2; this.rad = Math.min(this.c.width, this.c.height) * 0.35 } draw() { const x = this.x, n = this.data.length, as = Math.PI * 2 / n; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); this.ph += 0.02; for (let i = 5; i >= 1; i--) { const r = this.rad * i / 5, p = Math.sin(this.ph - i * 0.3) * 3; x.beginPath(); for (let j = 0; j <= n; j++) { const a = j * as - Math.PI / 2, px = this.cx + Math.cos(a) * (r + p), py = this.cy + Math.sin(a) * (r + p); j === 0 ? x.moveTo(px, py) : x.lineTo(px, py) } x.closePath(); x.strokeStyle = `rgba(99,102,241,${0.1 + i * 0.05})`; x.stroke() } this.data.forEach((d, i) => { const a = i * as - Math.PI / 2, px = this.cx + Math.cos(a) * this.rad, py = this.cy + Math.sin(a) * this.rad; x.beginPath(); x.moveTo(this.cx, this.cy); x.lineTo(px, py); x.strokeStyle = 'rgba(139,92,246,0.3)'; x.stroke(); const lx = this.cx + Math.cos(a) * (this.rad + 25), ly = this.cy + Math.sin(a) * (this.rad + 25); x.fillStyle = '#9ca3af'; x.font = '11px Outfit'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(d.a, lx, ly) }); x.beginPath(); this.data.forEach((d, i) => { const a = i * as - Math.PI / 2, r = this.rad * d.v, px = this.cx + Math.cos(a) * r, py = this.cy + Math.sin(a) * r; i === 0 ? x.moveTo(px, py) : x.lineTo(px, py) }); x.closePath(); x.fillStyle = 'rgba(139,92,246,0.3)'; x.fill(); x.strokeStyle = '#8b5cf6'; x.lineWidth = 2; x.stroke(); this.data.forEach((d, i) => { const a = i * as - Math.PI / 2, r = this.rad * d.v, px = this.cx + Math.cos(a) * r, py = this.cy + Math.sin(a) * r; x.beginPath(); x.arc(px, py, 5, 0, Math.PI * 2); x.fillStyle = '#ec4899'; x.fill() }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // RIDGE
+        class Ridge { constructor() { this.c = document.getElementById('ridge-c'); this.x = this.c.getContext('2d'); this.off = 0; this.rs(); this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440 } draw() { const x = this.x, days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], m = { l: 80, r: 40, t: 30, b: 40 }, w = this.c.width - m.l - m.r, h = this.c.height - m.t - m.b, rh = h / 7, amp = rh * 0.8; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); this.off += 0.02; days.forEach((day, di) => { const by = m.t + di * rh + rh * 0.9, hue = 250 + di * 15, grad = x.createLinearGradient(m.l, by - amp, m.l, by); grad.addColorStop(0, `hsla(${hue},70%,60%,0.9)`); grad.addColorStop(1, `hsla(${hue},70%,40%,0.1)`); x.beginPath(); x.moveTo(m.l, by); for (let i = 0; i < 24; i++) { const v = D.hourly[i] / 350 * (0.85 + Math.random() * 0.15), px = m.l + i / (23) * w, wv = Math.sin(this.off + i * 0.3 + di) * 2, py = by - v * amp + wv; x.lineTo(px, py) } x.lineTo(m.l + w, by); x.closePath(); x.fillStyle = grad; x.fill(); x.fillStyle = '#9ca3af'; x.font = '11px Outfit'; x.textAlign = 'right'; x.fillText(day, m.l - 10, by - rh * 0.3) }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+        // CHORD
+        class Chord { constructor() { this.c = document.getElementById('chord-c'); this.x = this.c.getContext('2d'); this.nodes = ['YouTube', 'Search', 'AI Tools', 'E-comm', 'Other']; this.colors = ['#ff0000', '#4285f4', '#8b5cf6', '#22c55e', '#607d8b']; this.matrix = [[3967, 76, 35, 15, 40], [84, 168, 10, 5, 15], [28, 12, 52, 3, 5], [8, 5, 2, 83, 10], [25, 15, 8, 12, 150]]; this.arcs = []; this.hov = null; this.rs(); this.c.onmousemove = e => { const r = this.c.getBoundingClientRect(), mx = e.clientX - r.left - this.cx, my = e.clientY - r.top - this.cy, d = Math.hypot(mx, my), a = Math.atan2(my, mx); this.hov = null; if (d > this.rad - 30 && d < this.rad + 30) this.arcs.forEach(arc => { let na = a; if (na < arc.s) na += Math.PI * 2; if (na >= arc.s && na <= arc.e) this.hov = arc.i }) }; this.an() } rs() { const r = this.c.parentElement.getBoundingClientRect(); this.c.width = r.width - 48; this.c.height = 440; this.cx = this.c.width / 2; this.cy = this.c.height / 2; this.rad = Math.min(this.c.width, this.c.height) * 0.38; this.calcArcs() } calcArcs() { const tots = this.nodes.map((_, i) => this.matrix[i].reduce((a, b) => a + b, 0) + this.matrix.reduce((a, r) => a + r[i], 0)), tot = tots.reduce((a, b) => a + b, 0); let a = -Math.PI / 2; const gap = 0.03; tots.forEach((t, i) => { const sp = t / tot * (Math.PI * 2 - gap * this.nodes.length); this.arcs.push({ s: a, e: a + sp, m: a + sp / 2, i }); a += sp + gap }) } draw() { const x = this.x; x.fillStyle = '#0a0a0f'; x.fillRect(0, 0, this.c.width, this.c.height); for (let i = 0; i < 5; i++)for (let j = 0; j < 5; j++) { if (this.matrix[i][j] === 0) continue; const h = this.hov === null || this.hov === i || this.hov === j, al = h ? 0.5 : 0.1, sa = this.arcs[i], da = this.arcs[j], san = sa.s + (sa.e - sa.s) * (j / 5 * 0.8 + 0.1), dan = da.s + (da.e - da.s) * (i / 5 * 0.8 + 0.1), r = this.rad - 15, sx = this.cx + Math.cos(san) * r, sy = this.cy + Math.sin(san) * r, dx = this.cx + Math.cos(dan) * r, dy = this.cy + Math.sin(dan) * r; x.beginPath(); x.moveTo(sx, sy); x.quadraticCurveTo(this.cx, this.cy, dx, dy); x.strokeStyle = `${this.colors[i]}${Math.round(al * 255).toString(16).padStart(2, '0')}`; x.lineWidth = Math.max(1, this.matrix[i][j] / 200); x.stroke() } this.arcs.forEach((arc, i) => { const h = this.hov === null || this.hov === i; x.beginPath(); x.arc(this.cx, this.cy, this.rad, arc.s, arc.e); x.strokeStyle = this.colors[i]; x.lineWidth = h ? 25 : 20; x.lineCap = 'round'; x.stroke(); const lx = this.cx + Math.cos(arc.m) * (this.rad + 35), ly = this.cy + Math.sin(arc.m) * (this.rad + 35); x.fillStyle = h ? '#fff' : '#9ca3af'; x.font = h ? 'bold 12px Outfit' : '11px Outfit'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(this.nodes[i], lx, ly) }) } an() { this.draw(); requestAnimationFrame(() => this.an()) } }
+    </script>
+</body>
+
+</html>

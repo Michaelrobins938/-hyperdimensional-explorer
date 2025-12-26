@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperdimensional Activity Explorer | Google Data</title>
+    <meta name="description"
+        content="Advanced multi-dimensional visualization of Google Activity data using WebGL, Canvas, and modern visualization techniques.">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Animated Background -->
+        <canvas id="bg-canvas" class="bg-canvas"></canvas>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-orb"></div>
+                    <div>
+                        <h1 class="title">Hyperdimensional Explorer</h1>
+                        <p class="subtitle">312 Dimensions → 8 Clusters → ∞ Insights</p>
+                    </div>
+                </div>
+                <div class="stats-mini">
+                    <div class="stat-chip">
+                        <span class="stat-value">5,929</span>
+                        <span class="stat-label">Events</span>
+                    </div>
+                    <div class="stat-chip youtube">
+                        <span class="stat-value">73%</span>
+                        <span class="stat-label">YouTube</span>
+                    </div>
+                    <div class="stat-chip purple">
+                        <span class="stat-value">312</span>
+                        <span class="stat-label">Dimensions</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-container">
+            <button class="nav-btn active" data-view="cosmos">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="12" y1="2" x2="12" y2="4"></line>
+                    <line x1="12" y1="20" x2="12" y2="22"></line>
+                    <line x1="2" y1="12" x2="4" y2="12"></line>
+                    <line x1="20" y1="12" x2="22" y2="12"></line>
+                </svg>
+                <span>Cosmos</span>
+            </button>
+            <button class="nav-btn" data-view="parallel">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="4" y1="4" x2="4" y2="20"></line>
+                    <line x1="8" y1="4" x2="8" y2="20"></line>
+                    <line x1="12" y1="4" x2="12" y2="20"></line>
+                    <line x1="16" y1="4" x2="16" y2="20"></line>
+                    <line x1="20" y1="4" x2="20" y2="20"></line>
+                    <polyline points="4,8 8,14 12,6 16,16 20,10"></polyline>
+                </svg>
+                <span>Parallel</span>
+            </button>
+            <button class="nav-btn" data-view="heatmap">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                    <line x1="3" y1="15" x2="21" y2="15"></line>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                    <line x1="15" y1="3" x2="15" y2="21"></line>
+                </svg>
+                <span>Temporal</span>
+            </button>
+            <button class="nav-btn" data-view="network">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="5" cy="6" r="3"></circle>
+                    <circle cx="19" cy="6" r="3"></circle>
+                    <circle cx="12" cy="18" r="3"></circle>
+                    <line x1="7" y1="8" x2="10" y2="16"></line>
+                    <line x1="17" y1="8" x2="14" y2="16"></line>
+                    <line x1="8" y1="6" x2="16" y2="6"></line>
+                </svg>
+                <span>Network</span>
+            </button>
+            <button class="nav-btn" data-view="flow">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4v16h16"></path>
+                    <path d="M4 12c4-4 8 4 12 0 2-2 4-4 4-8"></path>
+                </svg>
+                <span>Flow</span>
+            </button>
+            <button class="nav-btn" data-view="umap">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="6" cy="6" r="2"></circle>
+                    <circle cx="18" cy="8" r="2"></circle>
+                    <circle cx="8" cy="16" r="2"></circle>
+                    <circle cx="16" cy="18" r="2"></circle>
+                    <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+                <span>UMAP</span>
+            </button>
+            <button class="nav-btn" data-view="tree">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <circle cx="4" cy="6" r="2"></circle>
+                    <circle cx="20" cy="6" r="2"></circle>
+                    <circle cx="4" cy="18" r="2"></circle>
+                    <circle cx="20" cy="18" r="2"></circle>
+                    <line x1="12" y1="9" x2="6" y2="6"></line>
+                    <line x1="12" y1="9" x2="18" y2="6"></line>
+                    <line x1="12" y1="15" x2="6" y2="18"></line>
+                    <line x1="12" y1="15" x2="18" y2="18"></line>
+                </svg>
+                <span>Tree</span>
+            </button>
+            <button class="nav-btn" data-view="radar">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"></polygon>
+                    <polygon points="12,6 18,9.5 18,14.5 12,18 6,14.5 6,9.5"></polygon>
+                    <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+                <span>Radar</span>
+            </button>
+            <button class="nav-btn" data-view="ridge">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 6c3-2 6 2 10 0s7-2 10 0"></path>
+                    <path d="M2 12c3-2 6 2 10 0s7-2 10 0"></path>
+                    <path d="M2 18c3-2 6 2 10 0s7-2 10 0"></path>
+                </svg>
+                <span>Ridge</span>
+            </button>
+            <button class="nav-btn" data-view="chord">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a10 10 0 0 1 0 20"></path>
+                    <path d="M2 12c5-3 15 3 20 0"></path>
+                </svg>
+                <span>Chord</span>
+            </button>
+        </nav>
+
+        <!-- Main Visualization Area -->
+        <main class="main-content">
+            <!-- Cosmos View - 3D Cluster Visualization -->
+            <section id="cosmos-view" class="viz-section active">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🌌</span>
+                        Behavioral Cosmos
+                    </h2>
+                    <p class="viz-desc">8 behavioral clusters visualized as celestial bodies. Each point represents an
+                        activity event orbiting its cluster centroid.</p>
+                </div>
+                <div class="viz-container cosmos-container">
+                    <canvas id="cosmos-canvas"></canvas>
+                    <div class="cluster-legend">
+                        <h4>Clusters</h4>
+                        <div class="legend-items" id="cluster-legend"></div>
+                    </div>
+                    <div class="cosmos-controls">
+                        <button id="rotate-toggle" class="control-btn active">
+                            <span class="btn-icon">🔄</span>
+                            Auto-Rotate
+                        </button>
+                        <button id="explode-toggle" class="control-btn">
+                            <span class="btn-icon">💥</span>
+                            Explode View
+                        </button>
+                        <input type="range" id="zoom-slider" min="0.5" max="3" step="0.1" value="1">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Parallel Coordinates View -->
+            <section id="parallel-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">📊</span>
+                        Parallel Coordinates
+                    </h2>
+                    <p class="viz-desc">View all dimensions simultaneously. Each line represents a single activity
+                        traversing through dimensional space.</p>
+                </div>
+                <div class="viz-container parallel-container">
+                    <canvas id="parallel-canvas"></canvas>
+                    <div class="parallel-axes-labels" id="parallel-labels"></div>
+                    <div class="parallel-controls">
+                        <div class="filter-group">
+                            <label>Filter by Cluster:</label>
+                            <select id="cluster-filter">
+                                <option value="all">All Clusters</option>
+                                <option value="0">Cluster 0 - YouTube Core</option>
+                                <option value="1">Cluster 1 - YouTube Alt</option>
+                                <option value="2">Cluster 2 - Search</option>
+                                <option value="3">Cluster 3 - AI Tools</option>
+                                <option value="4">Cluster 4 - E-commerce</option>
+                                <option value="5">Cluster 5 - Late Night</option>
+                                <option value="6">Cluster 6 - Printify</option>
+                                <option value="7">Cluster 7 - YouTube Deep</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label>Opacity:</label>
+                            <input type="range" id="line-opacity" min="0.05" max="1" step="0.05" value="0.3">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Temporal Heatmap View -->
+            <section id="heatmap-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🔥</span>
+                        Temporal Density Field
+                    </h2>
+                    <p class="viz-desc">Activity intensity mapped across time dimensions. Brighter regions indicate
+                        higher engagement density.</p>
+                </div>
+                <div class="viz-container heatmap-container">
+                    <canvas id="heatmap-canvas"></canvas>
+                    <div class="heatmap-legend">
+                        <div class="heatmap-gradient"></div>
+                        <div class="heatmap-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    <div class="time-insights" id="time-insights">
+                        <div class="insight-card">
+                            <span class="insight-icon">🌙</span>
+                            <div>
+                                <h5>Night Owl</h5>
+                                <p>Peak at 10-11 PM</p>
+                            </div>
+                        </div>
+                        <div class="insight-card">
+                            <span class="insight-icon">☀️</span>
+                            <div>
+                                <h5>Midday Dip</h5>
+                                <p>Low at 12 PM</p>
+                            </div>
+                        </div>
+                        <div class="insight-card">
+                            <span class="insight-icon">📈</span>
+                            <div>
+                                <h5>Dual Peaks</h5>
+                                <p>4 PM & 7 PM spikes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Network View - Force-Directed Graph -->
+            <section id="network-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🕸️</span>
+                        Activity Network
+                    </h2>
+                    <p class="viz-desc">Interactive force-directed graph showing relationships between products,
+                        actions, and time patterns.</p>
+                </div>
+                <div class="viz-container network-container">
+                    <canvas id="network-canvas"></canvas>
+                    <div class="network-stats">
+                        <div class="net-stat">
+                            <span class="net-val" id="node-count">0</span>
+                            <span class="net-label">Nodes</span>
+                        </div>
+                        <div class="net-stat">
+                            <span class="net-val" id="edge-count">0</span>
+                            <span class="net-label">Edges</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flow View - Sankey-style -->
+            <section id="flow-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🌊</span>
+                        State Flow River
+                    </h2>
+                    <p class="viz-desc">Animated flow visualization showing transitions between activity states. Width
+                        represents transition frequency.</p>
+                </div>
+                <div class="viz-container flow-container">
+                    <canvas id="flow-canvas"></canvas>
+                    <div class="flow-legend" id="flow-legend"></div>
+                </div>
+            </section>
+
+            <!-- UMAP Projection View -->
+            <section id="umap-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🔮</span>
+                        UMAP Projection
+                    </h2>
+                    <p class="viz-desc">Dimensionality reduction visualization with animated morphing. Watch clusters
+                        reorganize in real-time.</p>
+                </div>
+                <div class="viz-container umap-container">
+                    <canvas id="umap-canvas"></canvas>
+                    <div class="cosmos-controls">
+                        <button id="umap-morph" class="control-btn">
+                            <span class="btn-icon">🔄</span>
+                            Morph Layout
+                        </button>
+                        <button id="umap-trails" class="control-btn">
+                            <span class="btn-icon">✨</span>
+                            Show Trails
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Radial Tree View -->
+            <section id="tree-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🌳</span>
+                        Radial Hierarchy
+                    </h2>
+                    <p class="viz-desc">Hierarchical activity structure as an orbital system. Hover to explore
+                        relationships.</p>
+                </div>
+                <div class="viz-container tree-container">
+                    <canvas id="tree-canvas"></canvas>
+                    <div class="cosmos-controls">
+                        <button id="tree-rotate" class="control-btn active">
+                            <span class="btn-icon">🔄</span>
+                            Auto-Rotate
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Radar Constellation View -->
+            <section id="radar-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🎯</span>
+                        Behavioral Radar
+                    </h2>
+                    <p class="viz-desc">Multi-axis profile showing your activity personality across 8 behavioral
+                        dimensions.</p>
+                </div>
+                <div class="viz-container radar-container">
+                    <canvas id="radar-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Ridge Plot View -->
+            <section id="ridge-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">📈</span>
+                        Ridge Landscape
+                    </h2>
+                    <p class="viz-desc">3D stacked distributions showing activity intensity across each day of the week.
+                    </p>
+                </div>
+                <div class="viz-container ridge-container">
+                    <canvas id="ridge-canvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Chord Diagram View -->
+            <section id="chord-view" class="viz-section">
+                <div class="viz-header">
+                    <h2 class="viz-title">
+                        <span class="viz-icon">🔗</span>
+                        Chord Transitions
+                    </h2>
+                    <p class="viz-desc">Circular flow diagram showing how you transition between different product
+                        categories.</p>
+                </div>
+                <div class="viz-container chord-container">
+                    <canvas id="chord-canvas"></canvas>
+                </div>
+            </section>
+        </main>
+
+        <!-- Info Panel -->
+        <aside class="info-panel">
+            <div class="info-header">
+                <h3>Dimensional Analysis</h3>
+            </div>
+            <div class="info-content">
+                <div class="info-item">
+                    <div class="info-label">Feature Matrix</div>
+                    <div class="info-value">5,929 × 312</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Sparsity</div>
+                    <div class="info-value progress-bar">
+                        <div class="progress" style="width: 94%"></div>
+                        <span>94%</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Variance in PC1</div>
+                    <div class="info-value">2.5%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Silhouette Score</div>
+                    <div class="info-value">0.68</div>
+                </div>
+                <div class="info-separator"></div>
+                <div class="info-features">
+                    <h4>Feature Breakdown</h4>
+                    <div class="feature-bar">
+                        <div class="feature-segment product" style="width: 68%"></div>
+                        <div class="feature-segment action" style="width: 2%"></div>
+                        <div class="feature-segment temporal" style="width: 1%"></div>
+                        <div class="feature-segment text" style="width: 29%"></div>
+                    </div>
+                    <div class="feature-labels">
+                        <span><i class="dot product"></i> Products (212)</span>
+                        <span><i class="dot action"></i> Actions (7)</span>
+                        <span><i class="dot temporal"></i> Time (2)</span>
+                        <span><i class="dot text"></i> TF-IDF (100)</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="cosmos.js"></script>
+    <script src="parallel.js"></script>
+    <script src="heatmap.js"></script>
+    <script src="network.js"></script>
+    <script src="flow.js"></script>
+    <script src="umap.js"></script>
+    <script src="radial-tree.js"></script>
+    <script src="radar.js"></script>
+    <script src="ridge.js"></script>
+    <script src="chord.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
